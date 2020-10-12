@@ -1,0 +1,15 @@
+syntax = "proto3";
+package chat;
+
+message Message {
+  string body = 1;
+  string cuerpo = 2;
+}
+
+message MessageResponse {
+  string seguimiento = 1;
+}
+
+service ChatService {
+  rpc SayHello(Message) returns (MessageResponse) {}
+}

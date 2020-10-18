@@ -29,8 +29,7 @@ type Message struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Body   string `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
-	Cuerpo string `protobuf:"bytes,2,opt,name=cuerpo,proto3" json:"cuerpo,omitempty"`
+	Mensaje string `protobuf:"bytes,1,opt,name=mensaje,proto3" json:"mensaje,omitempty"`
 }
 
 func (x *Message) Reset() {
@@ -65,16 +64,9 @@ func (*Message) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Message) GetBody() string {
+func (x *Message) GetMensaje() string {
 	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-func (x *Message) GetCuerpo() string {
-	if x != nil {
-		return x.Cuerpo
+		return x.Mensaje
 	}
 	return ""
 }
@@ -84,7 +76,7 @@ type MessageResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Seguimiento string `protobuf:"bytes,1,opt,name=seguimiento,proto3" json:"seguimiento,omitempty"`
+	Respuesta string `protobuf:"bytes,1,opt,name=respuesta,proto3" json:"respuesta,omitempty"`
 }
 
 func (x *MessageResponse) Reset() {
@@ -119,7 +111,173 @@ func (*MessageResponse) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *MessageResponse) GetSeguimiento() string {
+func (x *MessageResponse) GetRespuesta() string {
+	if x != nil {
+		return x.Respuesta
+	}
+	return ""
+}
+
+type Colas struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Respuesta   string `protobuf:"bytes,1,opt,name=respuesta,proto3" json:"respuesta,omitempty"`
+	Retail      string `protobuf:"bytes,2,opt,name=retail,proto3" json:"retail,omitempty"`
+	Prioritario string `protobuf:"bytes,3,opt,name=prioritario,proto3" json:"prioritario,omitempty"`
+	Normal      string `protobuf:"bytes,4,opt,name=normal,proto3" json:"normal,omitempty"`
+}
+
+func (x *Colas) Reset() {
+	*x = Colas{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_chat_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Colas) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Colas) ProtoMessage() {}
+
+func (x *Colas) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Colas.ProtoReflect.Descriptor instead.
+func (*Colas) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Colas) GetRespuesta() string {
+	if x != nil {
+		return x.Respuesta
+	}
+	return ""
+}
+
+func (x *Colas) GetRetail() string {
+	if x != nil {
+		return x.Retail
+	}
+	return ""
+}
+
+func (x *Colas) GetPrioritario() string {
+	if x != nil {
+		return x.Prioritario
+	}
+	return ""
+}
+
+func (x *Colas) GetNormal() string {
+	if x != nil {
+		return x.Normal
+	}
+	return ""
+}
+
+type Paquete struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ID          string `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	Tipo        string `protobuf:"bytes,2,opt,name=tipo,proto3" json:"tipo,omitempty"`
+	Valor       string `protobuf:"bytes,3,opt,name=valor,proto3" json:"valor,omitempty"`
+	Origen      string `protobuf:"bytes,4,opt,name=origen,proto3" json:"origen,omitempty"`
+	Destino     string `protobuf:"bytes,5,opt,name=destino,proto3" json:"destino,omitempty"`
+	Intentos    string `protobuf:"bytes,6,opt,name=intentos,proto3" json:"intentos,omitempty"`
+	Seguimiento string `protobuf:"bytes,7,opt,name=seguimiento,proto3" json:"seguimiento,omitempty"`
+}
+
+func (x *Paquete) Reset() {
+	*x = Paquete{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_chat_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Paquete) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Paquete) ProtoMessage() {}
+
+func (x *Paquete) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Paquete.ProtoReflect.Descriptor instead.
+func (*Paquete) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Paquete) GetID() string {
+	if x != nil {
+		return x.ID
+	}
+	return ""
+}
+
+func (x *Paquete) GetTipo() string {
+	if x != nil {
+		return x.Tipo
+	}
+	return ""
+}
+
+func (x *Paquete) GetValor() string {
+	if x != nil {
+		return x.Valor
+	}
+	return ""
+}
+
+func (x *Paquete) GetOrigen() string {
+	if x != nil {
+		return x.Origen
+	}
+	return ""
+}
+
+func (x *Paquete) GetDestino() string {
+	if x != nil {
+		return x.Destino
+	}
+	return ""
+}
+
+func (x *Paquete) GetIntentos() string {
+	if x != nil {
+		return x.Intentos
+	}
+	return ""
+}
+
+func (x *Paquete) GetSeguimiento() string {
 	if x != nil {
 		return x.Seguimiento
 	}
@@ -130,18 +288,52 @@ var File_chat_proto protoreflect.FileDescriptor
 
 var file_chat_proto_rawDesc = []byte{
 	0x0a, 0x0a, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x63, 0x68,
-	0x61, 0x74, 0x22, 0x35, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x12, 0x0a,
-	0x04, 0x62, 0x6f, 0x64, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x6f, 0x64,
-	0x79, 0x12, 0x16, 0x0a, 0x06, 0x63, 0x75, 0x65, 0x72, 0x70, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x06, 0x63, 0x75, 0x65, 0x72, 0x70, 0x6f, 0x22, 0x33, 0x0a, 0x0f, 0x4d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x20, 0x0a, 0x0b,
-	0x73, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0b, 0x73, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74, 0x6f, 0x32, 0x41,
-	0x0a, 0x0b, 0x43, 0x68, 0x61, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x32, 0x0a,
-	0x08, 0x53, 0x61, 0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x12, 0x0d, 0x2e, 0x63, 0x68, 0x61, 0x74,
-	0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
-	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x74, 0x22, 0x23, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x18, 0x0a,
+	0x07, 0x6d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x6d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x22, 0x2f, 0x0a, 0x0f, 0x4d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65,
+	0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72,
+	0x65, 0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x22, 0x77, 0x0a, 0x05, 0x43, 0x6f, 0x6c, 0x61,
+	0x73, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65, 0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x12,
+	0x16, 0x0a, 0x06, 0x72, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x72, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12, 0x20, 0x0a, 0x0b, 0x70, 0x72, 0x69, 0x6f, 0x72,
+	0x69, 0x74, 0x61, 0x72, 0x69, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x72,
+	0x69, 0x6f, 0x72, 0x69, 0x74, 0x61, 0x72, 0x69, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x6e, 0x6f, 0x72,
+	0x6d, 0x61, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6e, 0x6f, 0x72, 0x6d, 0x61,
+	0x6c, 0x22, 0xb3, 0x01, 0x0a, 0x07, 0x50, 0x61, 0x71, 0x75, 0x65, 0x74, 0x65, 0x12, 0x0e, 0x0a,
+	0x02, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x49, 0x44, 0x12, 0x12, 0x0a,
+	0x04, 0x74, 0x69, 0x70, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x69, 0x70,
+	0x6f, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x76, 0x61, 0x6c, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x72, 0x69, 0x67, 0x65,
+	0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x72, 0x69, 0x67, 0x65, 0x6e, 0x12,
+	0x18, 0x0a, 0x07, 0x64, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x6f, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x64, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x6e, 0x74,
+	0x65, 0x6e, 0x74, 0x6f, 0x73, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x6e, 0x74,
+	0x65, 0x6e, 0x74, 0x6f, 0x73, 0x12, 0x20, 0x0a, 0x0b, 0x73, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69,
+	0x65, 0x6e, 0x74, 0x6f, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x73, 0x65, 0x67, 0x75,
+	0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74, 0x6f, 0x32, 0x46, 0x0a, 0x0b, 0x43, 0x68, 0x61, 0x74, 0x53,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x37, 0x0a, 0x0d, 0x49, 0x6e, 0x67, 0x72, 0x65, 0x73,
+	0x61, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x6e, 0x12, 0x0d, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32,
+	0x45, 0x0a, 0x0b, 0x53, 0x65, 0x67, 0x75, 0x69, 0x6d, 0x69, 0x65, 0x6e, 0x74, 0x6f, 0x12, 0x36,
+	0x0a, 0x0c, 0x53, 0x65, 0x67, 0x75, 0x69, 0x72, 0x50, 0x65, 0x64, 0x69, 0x64, 0x6f, 0x12, 0x0d,
+	0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e,
+	0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x3c, 0x0a, 0x09, 0x56, 0x65, 0x72, 0x69, 0x66, 0x69,
+	0x63, 0x61, 0x72, 0x12, 0x2f, 0x0a, 0x0f, 0x56, 0x65, 0x72, 0x69, 0x66, 0x69, 0x63, 0x61, 0x72,
+	0x50, 0x65, 0x64, 0x69, 0x64, 0x6f, 0x12, 0x0d, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x0b, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x43, 0x6f, 0x6c,
+	0x61, 0x73, 0x22, 0x00, 0x32, 0x37, 0x0a, 0x05, 0x50, 0x65, 0x64, 0x69, 0x72, 0x12, 0x2e, 0x0a,
+	0x0c, 0x50, 0x65, 0x64, 0x69, 0x72, 0x50, 0x61, 0x71, 0x75, 0x65, 0x74, 0x65, 0x12, 0x0d, 0x2e,
+	0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x0d, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x50, 0x61, 0x71, 0x75, 0x65, 0x74, 0x65, 0x22, 0x00, 0x32, 0x49, 0x0a,
+	0x0a, 0x41, 0x63, 0x74, 0x75, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x72, 0x12, 0x3b, 0x0a, 0x11, 0x41,
+	0x63, 0x74, 0x75, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x72, 0x50, 0x61, 0x71, 0x75, 0x65, 0x74, 0x65,
+	0x12, 0x0d, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a,
+	0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -156,16 +348,26 @@ func file_chat_proto_rawDescGZIP() []byte {
 	return file_chat_proto_rawDescData
 }
 
-var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_chat_proto_goTypes = []interface{}{
 	(*Message)(nil),         // 0: chat.Message
 	(*MessageResponse)(nil), // 1: chat.MessageResponse
+	(*Colas)(nil),           // 2: chat.Colas
+	(*Paquete)(nil),         // 3: chat.Paquete
 }
 var file_chat_proto_depIdxs = []int32{
-	0, // 0: chat.ChatService.SayHello:input_type -> chat.Message
-	1, // 1: chat.ChatService.SayHello:output_type -> chat.MessageResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: chat.ChatService.IngresarOrden:input_type -> chat.Message
+	0, // 1: chat.Seguimiento.SeguirPedido:input_type -> chat.Message
+	0, // 2: chat.Verificar.VerificarPedido:input_type -> chat.Message
+	0, // 3: chat.Pedir.PedirPaquete:input_type -> chat.Message
+	0, // 4: chat.Actualizar.ActualizarPaquete:input_type -> chat.Message
+	1, // 5: chat.ChatService.IngresarOrden:output_type -> chat.MessageResponse
+	1, // 6: chat.Seguimiento.SeguirPedido:output_type -> chat.MessageResponse
+	2, // 7: chat.Verificar.VerificarPedido:output_type -> chat.Colas
+	3, // 8: chat.Pedir.PedirPaquete:output_type -> chat.Paquete
+	1, // 9: chat.Actualizar.ActualizarPaquete:output_type -> chat.MessageResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -201,6 +403,30 @@ func file_chat_proto_init() {
 				return nil
 			}
 		}
+		file_chat_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Colas); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_chat_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Paquete); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -208,9 +434,9 @@ func file_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_chat_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   5,
 		},
 		GoTypes:           file_chat_proto_goTypes,
 		DependencyIndexes: file_chat_proto_depIdxs,
@@ -234,7 +460,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ChatServiceClient interface {
-	SayHello(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error)
+	IngresarOrden(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error)
 }
 
 type chatServiceClient struct {
@@ -245,9 +471,9 @@ func NewChatServiceClient(cc grpc.ClientConnInterface) ChatServiceClient {
 	return &chatServiceClient{cc}
 }
 
-func (c *chatServiceClient) SayHello(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error) {
+func (c *chatServiceClient) IngresarOrden(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error) {
 	out := new(MessageResponse)
-	err := c.cc.Invoke(ctx, "/chat.ChatService/SayHello", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/chat.ChatService/IngresarOrden", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -256,35 +482,35 @@ func (c *chatServiceClient) SayHello(ctx context.Context, in *Message, opts ...g
 
 // ChatServiceServer is the server API for ChatService service.
 type ChatServiceServer interface {
-	SayHello(context.Context, *Message) (*MessageResponse, error)
+	IngresarOrden(context.Context, *Message) (*MessageResponse, error)
 }
 
 // UnimplementedChatServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedChatServiceServer struct {
 }
 
-func (*UnimplementedChatServiceServer) SayHello(context.Context, *Message) (*MessageResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+func (*UnimplementedChatServiceServer) IngresarOrden(context.Context, *Message) (*MessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IngresarOrden not implemented")
 }
 
 func RegisterChatServiceServer(s *grpc.Server, srv ChatServiceServer) {
 	s.RegisterService(&_ChatService_serviceDesc, srv)
 }
 
-func _ChatService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ChatService_IngresarOrden_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceServer).SayHello(ctx, in)
+		return srv.(ChatServiceServer).IngresarOrden(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chat.ChatService/SayHello",
+		FullMethod: "/chat.ChatService/IngresarOrden",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).SayHello(ctx, req.(*Message))
+		return srv.(ChatServiceServer).IngresarOrden(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -294,8 +520,296 @@ var _ChatService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ChatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _ChatService_SayHello_Handler,
+			MethodName: "IngresarOrden",
+			Handler:    _ChatService_IngresarOrden_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}
+
+// SeguimientoClient is the client API for Seguimiento service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type SeguimientoClient interface {
+	SeguirPedido(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error)
+}
+
+type seguimientoClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSeguimientoClient(cc grpc.ClientConnInterface) SeguimientoClient {
+	return &seguimientoClient{cc}
+}
+
+func (c *seguimientoClient) SeguirPedido(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error) {
+	out := new(MessageResponse)
+	err := c.cc.Invoke(ctx, "/chat.Seguimiento/SeguirPedido", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SeguimientoServer is the server API for Seguimiento service.
+type SeguimientoServer interface {
+	SeguirPedido(context.Context, *Message) (*MessageResponse, error)
+}
+
+// UnimplementedSeguimientoServer can be embedded to have forward compatible implementations.
+type UnimplementedSeguimientoServer struct {
+}
+
+func (*UnimplementedSeguimientoServer) SeguirPedido(context.Context, *Message) (*MessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SeguirPedido not implemented")
+}
+
+func RegisterSeguimientoServer(s *grpc.Server, srv SeguimientoServer) {
+	s.RegisterService(&_Seguimiento_serviceDesc, srv)
+}
+
+func _Seguimiento_SeguirPedido_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SeguimientoServer).SeguirPedido(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.Seguimiento/SeguirPedido",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SeguimientoServer).SeguirPedido(ctx, req.(*Message))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Seguimiento_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.Seguimiento",
+	HandlerType: (*SeguimientoServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SeguirPedido",
+			Handler:    _Seguimiento_SeguirPedido_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}
+
+// VerificarClient is the client API for Verificar service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type VerificarClient interface {
+	VerificarPedido(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Colas, error)
+}
+
+type verificarClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewVerificarClient(cc grpc.ClientConnInterface) VerificarClient {
+	return &verificarClient{cc}
+}
+
+func (c *verificarClient) VerificarPedido(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Colas, error) {
+	out := new(Colas)
+	err := c.cc.Invoke(ctx, "/chat.Verificar/VerificarPedido", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// VerificarServer is the server API for Verificar service.
+type VerificarServer interface {
+	VerificarPedido(context.Context, *Message) (*Colas, error)
+}
+
+// UnimplementedVerificarServer can be embedded to have forward compatible implementations.
+type UnimplementedVerificarServer struct {
+}
+
+func (*UnimplementedVerificarServer) VerificarPedido(context.Context, *Message) (*Colas, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerificarPedido not implemented")
+}
+
+func RegisterVerificarServer(s *grpc.Server, srv VerificarServer) {
+	s.RegisterService(&_Verificar_serviceDesc, srv)
+}
+
+func _Verificar_VerificarPedido_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VerificarServer).VerificarPedido(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.Verificar/VerificarPedido",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VerificarServer).VerificarPedido(ctx, req.(*Message))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Verificar_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.Verificar",
+	HandlerType: (*VerificarServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "VerificarPedido",
+			Handler:    _Verificar_VerificarPedido_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}
+
+// PedirClient is the client API for Pedir service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type PedirClient interface {
+	PedirPaquete(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Paquete, error)
+}
+
+type pedirClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewPedirClient(cc grpc.ClientConnInterface) PedirClient {
+	return &pedirClient{cc}
+}
+
+func (c *pedirClient) PedirPaquete(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Paquete, error) {
+	out := new(Paquete)
+	err := c.cc.Invoke(ctx, "/chat.Pedir/PedirPaquete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// PedirServer is the server API for Pedir service.
+type PedirServer interface {
+	PedirPaquete(context.Context, *Message) (*Paquete, error)
+}
+
+// UnimplementedPedirServer can be embedded to have forward compatible implementations.
+type UnimplementedPedirServer struct {
+}
+
+func (*UnimplementedPedirServer) PedirPaquete(context.Context, *Message) (*Paquete, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PedirPaquete not implemented")
+}
+
+func RegisterPedirServer(s *grpc.Server, srv PedirServer) {
+	s.RegisterService(&_Pedir_serviceDesc, srv)
+}
+
+func _Pedir_PedirPaquete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedirServer).PedirPaquete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.Pedir/PedirPaquete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedirServer).PedirPaquete(ctx, req.(*Message))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Pedir_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.Pedir",
+	HandlerType: (*PedirServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "PedirPaquete",
+			Handler:    _Pedir_PedirPaquete_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}
+
+// ActualizarClient is the client API for Actualizar service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ActualizarClient interface {
+	ActualizarPaquete(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error)
+}
+
+type actualizarClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewActualizarClient(cc grpc.ClientConnInterface) ActualizarClient {
+	return &actualizarClient{cc}
+}
+
+func (c *actualizarClient) ActualizarPaquete(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error) {
+	out := new(MessageResponse)
+	err := c.cc.Invoke(ctx, "/chat.Actualizar/ActualizarPaquete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ActualizarServer is the server API for Actualizar service.
+type ActualizarServer interface {
+	ActualizarPaquete(context.Context, *Message) (*MessageResponse, error)
+}
+
+// UnimplementedActualizarServer can be embedded to have forward compatible implementations.
+type UnimplementedActualizarServer struct {
+}
+
+func (*UnimplementedActualizarServer) ActualizarPaquete(context.Context, *Message) (*MessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActualizarPaquete not implemented")
+}
+
+func RegisterActualizarServer(s *grpc.Server, srv ActualizarServer) {
+	s.RegisterService(&_Actualizar_serviceDesc, srv)
+}
+
+func _Actualizar_ActualizarPaquete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ActualizarServer).ActualizarPaquete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.Actualizar/ActualizarPaquete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ActualizarServer).ActualizarPaquete(ctx, req.(*Message))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Actualizar_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.Actualizar",
+	HandlerType: (*ActualizarServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ActualizarPaquete",
+			Handler:    _Actualizar_ActualizarPaquete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

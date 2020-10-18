@@ -2,14 +2,46 @@ syntax = "proto3";
 package chat;
 
 message Message {
-  string body = 1;
-  string cuerpo = 2;
+  string mensaje = 1;
 }
 
 message MessageResponse {
-  string seguimiento = 1;
+  string respuesta = 1;
+}
+
+message Colas {
+  string respuesta = 1;
+  string retail = 2;
+  string prioritario = 3;
+  string normal = 4;
+}
+
+message Paquete {
+  string ID = 1;
+  string tipo = 2;
+  string valor = 3;
+  string origen = 4;
+  string destino = 5;
+  string intentos = 6;
+  string seguimiento = 7;
 }
 
 service ChatService {
-  rpc SayHello(Message) returns (MessageResponse) {}
+  rpc IngresarOrden(Message) returns (MessageResponse) {}
+}
+
+service Seguimiento {
+  rpc SeguirPedido(Message) returns (MessageResponse) {}
+}
+
+service Verificar {
+  rpc VerificarPedido(Message) returns (Colas) {}
+}
+
+service Pedir {
+  rpc PedirPaquete(Message) returns (Paquete) {}
+}
+
+service Actualizar {
+  rpc ActualizarPaquete(Message) returns (MessageResponse) {}
 }

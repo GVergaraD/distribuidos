@@ -21,6 +21,10 @@ func main() {
 	grpcServer := grpc.NewServer()
 
 	chat.RegisterChatServiceServer(grpcServer, &s)
+	chat.RegisterSeguimientoServer(grpcServer, &s)
+	chat.RegisterVerificarServer(grpcServer, &s)
+	chat.RegisterPedirServer(grpcServer, &s)
+	chat.RegisterActualizarServer(grpcServer, &s)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)

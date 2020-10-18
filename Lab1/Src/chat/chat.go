@@ -3,6 +3,7 @@ package chat
 import (
 	"container/list"
 	"encoding/csv"
+	"encoding/json"
 	"log"
 	"os"
 	"strconv"
@@ -46,6 +47,16 @@ type PaqueteSeguimiento struct {
 	IDCamion    string
 	Intentos    int
 	Estado      string
+	Tipo        string
+	Valor       string
+}
+
+// PaqueteFinanza para pasar a finanzas
+type PaqueteFinanza struct {
+	IDPaquete string
+	Intentos  int
+	Entrega   string
+	Monto     int
 }
 
 // Retail -> cola de paquetes que funciona como cola para paquetes tipo retail
@@ -118,7 +129,9 @@ func (s *Server) IngresarOrden(ctx context.Context, in *Message) (*MessageRespon
 		NumeroSeguimiento,
 		"0",
 		1,
-		"En bodega"}
+		"En bodega",
+		prioritario,
+		valor}
 
 	Memoria = append(Memoria, seg)
 
@@ -284,13 +297,13 @@ func (s *Server) ActualizarPaquete(ctx context.Context, in *Message) (*MessageRe
 		// with this channel open, we can then start to interact
 		// with the instance and declare Queues that we can publish and
 		// subscribe to
-		_, err = ch.QueueDeclare(
-			"TestQueue",
-			false,
-			false,
-			false,
-			false,
-			nil,
+		q, err := ch.QueueDeclare(
+			"hello-queue", // name
+			false,         // durable
+			false,         // delete when unused
+			false,         // exclusive
+			false,         // no-wait
+			nil,           // arguments
 		)
 		// We can print out the status of our Queue here
 		// this will information like the amount of messages on
@@ -301,17 +314,53 @@ func (s *Server) ActualizarPaquete(ctx context.Context, in *Message) (*MessageRe
 			log.Fatalf("Handle any errors if we were unable to create the queue : %s", err)
 		}
 
+		IDPaque := Memoria[num].IDPaquete
+		Inten := Memoria[num].Intentos
+		Entreg := Memoria[num].Estado
+		Tip := Memoria[num].Tipo
+		Val := Memoria[num].Valor
+
+		var Mont int
+
+		Valo, err := strconv.Atoi(Val)
+		if err != nil {
+			log.Fatalf("Error al pasar el string a numero: %s", err)
+		}
+
+		if estado == "Entregado" {
+			Mont = Valo
+		} else if estado == "No entregado" {
+
+			if Tip == "normal" {
+				Mont = 0 - (10 * Inten)
+			}
+
+			if Tip == "prioritario" {
+				Mont = int(30*Valo/100) - (10 * Inten)
+			}
+
+			if Tip == "retail" {
+				Mont = Valo - (10 * Inten)
+			}
+
+		}
+
+		mens := PaqueteFinanza{IDPaquete: IDPaque, Intentos: Inten, Entrega: Entreg, Monto: Mont}
+
+		body, err := json.Marshal(mens)
+		if err != nil {
+			log.Fatalf("Error encoding JSON :%s", err)
+		}
 		// attempt to publish a message to the queue!
 		err = ch.Publish(
-			"",
-			"TestQueue",
-			false,
-			false,
+			"",     // exchange
+			q.Name, // routing key
+			false,  // mandatory
+			false,  // immediate
 			amqp.Publishing{
-				ContentType: "text/plain",
-				Body:        []byte("Hello World"),
-			},
-		)
+				ContentType: "application/json",
+				Body:        body,
+			})
 
 		if err != nil {
 			log.Fatalf("Error in publish: %s", err)

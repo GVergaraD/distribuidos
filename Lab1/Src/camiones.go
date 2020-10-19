@@ -136,11 +136,11 @@ func main() {
 			select {
 			case <-ch:
 				//procede a rutina
-				//fmt.Println("Camion 1 en la cola")
+				////fmt.Println("Camion 1 en la cola")
 				//se recibe un paquete
 				if <-chdisp1 == "yes" {
 					capacidad1--
-					//fmt.Println("Camion 1 espera 2do paquete")
+					////fmt.Println("Camion 1 espera 2do paquete")
 				}
 				//pedir
 				select {
@@ -169,7 +169,7 @@ func main() {
 					select {
 					case <-chp:
 						if retail >= 1 || prioritario >= 1 || normal >= 1 {
-							//fmt.Println("pidiendo 2do paquete recibido;", tipo12)
+							////fmt.Println("pidiendo 2do paquete recibido;", tipo12)
 							respuesta2, err := p.PedirPaquete(context.Background(), &chat.Message{Mensaje: tipo12})
 							if err != nil {
 								log.Fatalf("Error al pedir paquete: %s", err)
@@ -185,13 +185,13 @@ func main() {
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
-							//fmt.Println("2do paquete recibido")
+							////fmt.Println("2do paquete recibido")
 						}
 					}
 				case <-time.After(time.Duration(espera) * time.Second): //tiempo de espera por 2do paquete
-					//fmt.Println("no llegó 2do pedido")
+					////fmt.Println("no llegó 2do pedido")
 				}
-				//fmt.Println("Camion 1 se va")
+				////fmt.Println("Camion 1 se va")
 				//time.Sleep(time.Second * 20)
 				//funcion para entregar paquetes
 				//se debe ver cual genera mas ingreso
@@ -215,9 +215,9 @@ func main() {
 								p11 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
@@ -244,14 +244,14 @@ func main() {
 								p11 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 
 							if p11-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p11-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -289,9 +289,9 @@ func main() {
 								p11 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
@@ -318,13 +318,13 @@ func main() {
 								p11 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p11-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p11-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -361,9 +361,9 @@ func main() {
 								p12 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos2++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
@@ -390,13 +390,13 @@ func main() {
 								p12 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p12-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p12-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -434,9 +434,9 @@ func main() {
 								p12 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos2++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
@@ -463,13 +463,13 @@ func main() {
 								p12 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p12-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p12-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -506,9 +506,9 @@ func main() {
 								p11 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
@@ -535,13 +535,13 @@ func main() {
 								p11 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p11-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p11-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -561,8 +561,8 @@ func main() {
 						}
 					}
 				}
-				//fmt.Println("Camion 1, Paquete:entregado")
-				////fmt.Println("Paquete en la cola")
+				////fmt.Println("Camion 1, Paquete:entregado")
+				//////fmt.Println("Paquete en la cola")
 			}
 			capacidad1 = 2
 			intentos = 1
@@ -596,11 +596,11 @@ func main() {
 			case <-ch2:
 
 				//time.Sleep(time.Second * 2)
-				//fmt.Println("Camion 2 en la cola")
+				////fmt.Println("Camion 2 en la cola")
 				//se recibe un paquete
 				if <-chdisp2 == "yes" {
 					capacidad2--
-					//fmt.Println("Camion 2 espera 2do paquete")
+					////fmt.Println("Camion 2 espera 2do paquete")
 				}
 				//pedir
 				select {
@@ -628,7 +628,7 @@ func main() {
 					//pedir2
 					select {
 					case <-chp2:
-						//fmt.Println("pidiendo 2do paquete recibido;", tipo22)
+						////fmt.Println("pidiendo 2do paquete recibido;", tipo22)
 						if retail >= 1 || prioritario >= 1 || normal >= 1 {
 							respuesta2, err := p.PedirPaquete(context.Background(), &chat.Message{Mensaje: tipo22})
 							if err != nil {
@@ -645,13 +645,13 @@ func main() {
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
-							//fmt.Println("2do paquete recibido")
+							////fmt.Println("2do paquete recibido")
 						}
 					}
 				case <-time.After(time.Duration(espera) * time.Second): //tiempo de espera por 2do paquete
-					//fmt.Println("no llegó 2do pedido")
+					////fmt.Println("no llegó 2do pedido")
 				}
-				//fmt.Println("Camion 2 se va")
+				////fmt.Println("Camion 2 se va")
 				//time.Sleep(time.Second * 20)
 				//funcion para entregar paquetes
 				//se debe ver cual genera mas ingreso
@@ -675,9 +675,9 @@ func main() {
 								p21 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
@@ -704,13 +704,13 @@ func main() {
 								p21 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p21-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p21-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -748,9 +748,9 @@ func main() {
 								p21 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
@@ -777,13 +777,13 @@ func main() {
 								p21 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p21-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p21-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -820,9 +820,9 @@ func main() {
 								p22 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos2++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
@@ -849,13 +849,13 @@ func main() {
 								p22 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p22-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p22-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -893,9 +893,9 @@ func main() {
 								p22 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos2++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
@@ -922,13 +922,13 @@ func main() {
 								p22 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p22-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p22-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -965,9 +965,9 @@ func main() {
 								p21 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							intentos++
-							//fmt.Println("Reintento")
+							////fmt.Println("Reintento")
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
@@ -994,13 +994,13 @@ func main() {
 								p21 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p21-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p21-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1020,8 +1020,8 @@ func main() {
 						}
 					}
 				}
-				//fmt.Println("Camion 2, Paquete: entregado")
-				////fmt.Println("Paquete en la cola")
+				////fmt.Println("Camion 2, Paquete: entregado")
+				//////fmt.Println("Paquete en la cola")
 			}
 			capacidad2 = 2
 			intentos = 1
@@ -1054,11 +1054,11 @@ func main() {
 
 			select {
 			case <-ch3:
-				//fmt.Println("Camion 3 en la cola")
+				////fmt.Println("Camion 3 en la cola")
 				//se recibe un paquete
 				if <-chdisp3 == "yes" {
 					capacidad3--
-					//fmt.Println("Camion 3 espera 2do paquete")
+					////fmt.Println("Camion 3 espera 2do paquete")
 				}
 				//pedir
 				select {
@@ -1086,7 +1086,7 @@ func main() {
 					//pedir2
 					select {
 					case <-chp3:
-						//fmt.Println("pidiendo 2do paquete recibido;", tipo32)
+						////fmt.Println("pidiendo 2do paquete recibido;", tipo32)
 						if retail >= 1 || prioritario >= 1 || normal >= 1 {
 							respuesta2, err := p.PedirPaquete(context.Background(), &chat.Message{Mensaje: tipo32})
 							if err != nil {
@@ -1103,13 +1103,13 @@ func main() {
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
-							//fmt.Println("2do paquete recibido")
+							////fmt.Println("2do paquete recibido")
 						}
 					}
 				case <-time.After(time.Duration(espera) * time.Second): //tiempo de espera por 2do paquete
-					//fmt.Println("no llegó 2do pedido")
+					////fmt.Println("no llegó 2do pedido")
 				}
-				//fmt.Println("Camion 3 se va")
+				////fmt.Println("Camion 3 se va")
 
 				//funcion para entregar paquetes
 				//se debe ver cual genera mas ingreso
@@ -1133,14 +1133,14 @@ func main() {
 								p31 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 
 							if p31-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p31-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1175,13 +1175,13 @@ func main() {
 								p31 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p31-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p31-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1219,13 +1219,13 @@ func main() {
 								p31 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p31-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p31-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1260,13 +1260,13 @@ func main() {
 								p31 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p31-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p31-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1303,13 +1303,13 @@ func main() {
 								p32 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p32-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p32-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -1344,13 +1344,13 @@ func main() {
 								p32 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p32-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p32-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -1389,13 +1389,13 @@ func main() {
 								p32 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p32-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p32-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -1431,13 +1431,13 @@ func main() {
 								p32 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p32-10 > 0 {
 								intentos2++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p32-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
@@ -1475,13 +1475,13 @@ func main() {
 								p31 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p31-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p31-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1517,13 +1517,13 @@ func main() {
 								p31 = 0
 								break
 							}
-							//fmt.Println("intento fallido")
+							////fmt.Println("intento fallido")
 							if p31-10 > 0 {
 								intentos++
-								//fmt.Println("Reintento")
+								////fmt.Println("Reintento")
 							}
 							if p31-10 < 0 {
-								//fmt.Println("No lo vale")
+								////fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
 								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
@@ -1544,9 +1544,9 @@ func main() {
 						}
 					}
 				}
-				//fmt.Println("Camion 3, Paquete entregado")
+				////fmt.Println("Camion 3, Paquete entregado")
 
-				////fmt.Println("Paquete en la cola")
+				//////fmt.Println("Paquete en la cola")
 			}
 			capacidad3 = 2
 			intentos = 1

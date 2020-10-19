@@ -115,7 +115,7 @@ func main() {
 
 			TotalGanancias = TotalGanancias + Ganancias
 			TotalPerdidas = TotalPerdidas + Perdidas
-			Total = Total + TotalGanancias - TotalPerdidas
+			Total = TotalGanancias - TotalPerdidas
 
 			StringIntentos := strconv.Itoa(Intentos)
 			StringGanancias := strconv.Itoa(Ganancias)

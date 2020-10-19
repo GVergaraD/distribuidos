@@ -14,6 +14,12 @@ import (
 // Total guarda el total
 var Total int = 0
 
+// TotalGanancias guarda las ganancias totales
+var TotalGanancias = 0
+
+// TotalPerdidas guarda las perdidas totales
+var TotalPerdidas = 0
+
 // Ganancias muestra las ganancias
 var Ganancias int = 0
 
@@ -35,12 +41,12 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func guardar(archivo string, idpaquete string, intentos string, entrega string, monto string) {
+func guardar(archivo string, idpaquete string, intentos string, entrega string, ingresos string, gastos string) {
 	csvfile, err := os.OpenFile(archivo, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)
 	}
-	row := []string{idpaquete, intentos, entrega, monto}
+	row := []string{idpaquete, intentos, entrega, ingresos, gastos}
 	csvwriter := csv.NewWriter(csvfile)
 	csvwriter.Write(row)
 	csvwriter.Flush()
@@ -62,7 +68,7 @@ func main() {
 		log.Fatalf("failed creating file: %s", err)
 	}
 
-	row := []string{"IDPaquete", "Intentos", "Entrega", "Ganancias/Perdidas"}
+	row := []string{"IDPaquete", "Intentos", "Entrega", "Ingresos", "Gastos"}
 	csvwriter := csv.NewWriter(csvfile)
 	csvwriter.Write(row)
 	csvwriter.Flush()
@@ -104,19 +110,19 @@ func main() {
 			Entrega := Info.Entrega
 			Monto := Info.Monto
 
-			if Monto < 0 {
-				Perdidas = Perdidas + Monto
-			} else if Monto > 0 {
-				Ganancias = Ganancias + Monto
-			}
+			Perdidas = 10 * (Intentos - 1)
+			Ganancias = Monto
 
-			Total = Ganancias - Perdidas
+			TotalGanancias = TotalGanancias + Ganancias
+			TotalPerdidas = TotalPerdidas + Perdidas
+			Total = Total + TotalGanancias - TotalPerdidas
 
 			StringIntentos := strconv.Itoa(Intentos)
-			StringMonto := strconv.Itoa(Monto)
+			StringGanancias := strconv.Itoa(Ganancias)
+			StringPerdidas := strconv.Itoa(Perdidas)
 
-			guardar("balance.csv", IDPaquete, StringIntentos, Entrega, StringMonto)
-			log.Printf("Total: %s | Ganancias %s | Perdidas: %s", strconv.Itoa(Total), strconv.Itoa(Ganancias), strconv.Itoa(Perdidas))
+			guardar("balance.csv", IDPaquete, StringIntentos, Entrega, StringGanancias, StringPerdidas)
+			log.Printf("Total: %s | Ganancias %s | Perdidas: %s", strconv.Itoa(Total), strconv.Itoa(TotalGanancias), strconv.Itoa(TotalPerdidas))
 		}
 	}()
 

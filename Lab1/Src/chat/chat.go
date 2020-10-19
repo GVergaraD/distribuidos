@@ -14,21 +14,23 @@ import (
 	"golang.org/x/net/context"
 )
 
-// variable declaration using a type
+// timestamp varibale usada para timestamp al momento de escribir en ordenes.csv
 var timestamp []time.Time
+
+// data variable usada para escribir en el archivo ordenes.csv
 var data []string
 
 // numero variable para el seguimiento
 var numero int = 1
 
 // NumeroPaquete variable para id-paquete
-var NumeroPaquete int = 100
+var NumeroPaquete int = 1
 
 // Server funcion mas diabla
 type Server struct {
 }
 
-// Paquetes -> Estructura de datos para el paquete
+// Paquetes struct para guardar los paquetes en las colas
 type Paquetes struct {
 	IDPaquete   string
 	Seguimiento string
@@ -40,7 +42,7 @@ type Paquetes struct {
 	Destino     string
 }
 
-// PaqueteSeguimiento funcion
+// PaqueteSeguimiento struct para guardar los paqutes en memoria
 type PaqueteSeguimiento struct {
 	IDPaquete   string
 	Seguimiento string
@@ -51,13 +53,16 @@ type PaqueteSeguimiento struct {
 	Valor       string
 }
 
-// PaqueteFinanza para pasar a finanzas
+// PaqueteFinanza struct para pasar los datos a finanzas
 type PaqueteFinanza struct {
 	IDPaquete string
 	Intentos  int
 	Entrega   string
 	Monto     int
 }
+
+// diccionario para guardar el id del paquetete asociado a un numero de seguimiento
+var diccionario = make(map[string]int)
 
 // Retail -> cola de paquetes que funciona como cola para paquetes tipo retail
 var Retail = list.New()
@@ -71,46 +76,65 @@ var Normal = list.New()
 // Memoria -> guarda la informacion de los paquetes para los seguimientos
 var Memoria []PaqueteSeguimiento
 
-// IngresarOrden funcion que recive una orden del cliente, escribe en el archivo y responde el
-// codigo de seguimiento de la orden, ademas crea los paquetes y los manda a la cola correspondiente
-func (s *Server) IngresarOrden(ctx context.Context, in *Message) (*MessageResponse, error) {
+// escribir escribe en el csv de ordenes todas las ordenes ingresada por los clientes
 
-	timestamp := time.Now().Format("2006-01-02 15:04:05")
-	mensaje := strings.Split(in.Mensaje, "#")
-	_, nombre, valor, origen, destino, prioritario := mensaje[0], mensaje[1], mensaje[2], mensaje[3], mensaje[4], mensaje[5]
-
-	if prioritario == "0" {
-		prioritario = "normal"
-	} else if prioritario == "1" {
-		prioritario = "prioritario"
-	} else {
-		prioritario = "retail"
-	}
-
-	NumeroSeguimiento := strconv.Itoa(numero)
-	row := []string{timestamp, "N" + strconv.Itoa(NumeroPaquete), prioritario, nombre, valor, origen, destino, NumeroSeguimiento}
-
-	csvfile, err := os.OpenFile("ordenes.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-
+func escribir(archivo string, numeropaquete string, prioritario string, nombre string, valor string, origen string, destino string, numeroseguimiento string) {
+	csvfile, err := os.OpenFile(archivo, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)
 	}
-
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	row := []string{timestamp, numeropaquete, prioritario, nombre, valor, origen, destino, numeroseguimiento}
 	csvwriter := csv.NewWriter(csvfile)
 	csvwriter.Write(row)
 	csvwriter.Flush()
 	csvfile.Close()
+}
+
+// IngresarOrden funcion que recive una orden del cliente, escribe en el archivo y responde con el
+// codigo de seguimiento de la orden solo si esta es de tipo pyme, ademas crea los paquetes en memoria y
+// los manda a la cola correspondiente
+func (s *Server) IngresarOrden(ctx context.Context, in *Message) (*MessageResponse, error) {
+
+	mensaje := strings.Split(in.Mensaje, "#")
+	_, nombre, valor, origen, destino, prioritario := mensaje[0], mensaje[1], mensaje[2], mensaje[3], mensaje[4], mensaje[5]
+
+	NumeroSeguimiento := "N" + strconv.Itoa(numero)
+
+	if prioritario == "0" {
+		prioritario = "normal"
+		numero++
+	} else if prioritario == "1" {
+		prioritario = "prioritario"
+		numero++
+	} else {
+		prioritario = "retail"
+		NumeroSeguimiento = "0"
+	}
 
 	paquete := Paquetes{
-		"N" + strconv.Itoa(NumeroPaquete),
+		strconv.Itoa(NumeroPaquete),
 		NumeroSeguimiento,
 		prioritario,
 		valor,
-		0,
+		1,
 		"En bodega",
 		origen,
 		destino}
 
+	seg := PaqueteSeguimiento{
+		strconv.Itoa(NumeroPaquete),
+		NumeroSeguimiento,
+		"0",
+		1,
+		"En bodega",
+		prioritario,
+		valor}
+
+	// Escribir las ordenes de los clientes en el archivo ordenes.csv
+	escribir("ordenes.csv", strconv.Itoa(NumeroPaquete), prioritario, nombre, valor, origen, destino, NumeroSeguimiento)
+
+	// Poner paquetes en la cola correspondiente
 	if prioritario == "normal" {
 
 		Normal.PushBack(paquete)
@@ -124,37 +148,27 @@ func (s *Server) IngresarOrden(ctx context.Context, in *Message) (*MessageRespon
 		Retail.PushBack(paquete)
 	}
 
-	seg := PaqueteSeguimiento{
-		"N" + strconv.Itoa(NumeroPaquete),
-		NumeroSeguimiento,
-		"0",
-		1,
-		"En bodega",
-		prioritario,
-		valor}
-
 	Memoria = append(Memoria, seg)
+	diccionario[NumeroSeguimiento] = NumeroPaquete
 
-	numero++
 	NumeroPaquete++
 
 	log.Printf("Orden recibida del cliente: %s", strings.Split(in.Mensaje, "#"))
 	return &MessageResponse{Respuesta: NumeroSeguimiento}, nil
 }
 
-// SeguirPedido funcion
+// SeguirPedido funcion que recibe un numero de seguimiento y retorna el estado del pedido
 func (s *Server) SeguirPedido(ctx context.Context, in *Message) (*MessageResponse, error) {
+
 	log.Printf("Orden de seguimiento del cliente: %s", in.Mensaje)
 
-	num, err := strconv.Atoi(in.Mensaje)
-	if err != nil {
-		log.Fatalf("Error al pasar el string a numero: %s", err)
-	}
+	num := diccionario[in.Mensaje]
 	num--
 	return &MessageResponse{Respuesta: Memoria[num].Estado}, nil
 }
 
-// VerificarPedido funcion que verifica si hay pedidos en la cola
+// VerificarPedido funcion que verifica si hay pedidos en la cola y responde con la cantidad
+// de pedidos por cada cola (Cantidad de paquetes en cola retail, prioritario y normal)
 func (s *Server) VerificarPedido(ctx context.Context, in *Message) (*Colas, error) {
 
 	log.Printf("El camion pregunta: %s", in.Mensaje)
@@ -171,7 +185,8 @@ func (s *Server) VerificarPedido(ctx context.Context, in *Message) (*Colas, erro
 	return &Colas{Respuesta: "No"}, nil
 }
 
-// PedirPaquete funcion que pide un paquete y lo saca de la cola
+// PedirPaquete funcion en la que un camion pide un paquete de alguno de los tres tipos
+// y lo saca de la cola correspondiente enviando toda la informacion del paquete al camion
 func (s *Server) PedirPaquete(ctx context.Context, in *Message) (*Paquete, error) {
 
 	log.Printf("El camion pregunta: %s", in.Mensaje)
@@ -239,23 +254,22 @@ func (s *Server) PedirPaquete(ctx context.Context, in *Message) (*Paquete, error
 			Seguimiento: seguimiento}, nil
 	}
 
+	// Si no hay paquetes entonces retorna ""
 	return &Paquete{}, nil
 }
 
-// ActualizarPaquete funcion
+// ActualizarPaquete funcion que actualiza el estado de un paquete y si los camiones vuelven a la central
+// Logistica recibe la informacion y mediante rabbitmq y json envia la informacion necesaria a finanzas
 func (s *Server) ActualizarPaquete(ctx context.Context, in *Message) (*MessageResponse, error) {
 	log.Printf("Actualizar paquete: %s", in.Mensaje)
 
-	// in.Mensaje = "1#camion1#0#En camino"
-	// in.Mensaje = "1#camion1#3#Entrega"
-	// in.Mensaje = seguimiento#camion#intentos#estado
 	mensaje := strings.Split(in.Mensaje, "#")
-	seguimiento := mensaje[0]
+	id := mensaje[0]
 	camion := mensaje[1]
 	intentos := mensaje[2]
 	estado := mensaje[3]
 
-	num, err := strconv.Atoi(seguimiento)
+	num, err := strconv.Atoi(id)
 	if err != nil {
 		log.Fatalf("Error al pasar el string a numero: %s", err)
 	}
@@ -332,15 +346,15 @@ func (s *Server) ActualizarPaquete(ctx context.Context, in *Message) (*MessageRe
 		} else if estado == "No entregado" {
 
 			if Tip == "normal" {
-				Mont = 0 - (10 * Inten)
+				Mont = 0
 			}
 
 			if Tip == "prioritario" {
-				Mont = int(30*Valo/100) - (10 * Inten)
+				Mont = int(30 * Valo / 100)
 			}
 
 			if Tip == "retail" {
-				Mont = Valo - (10 * Inten)
+				Mont = Valo
 			}
 
 		}
@@ -368,6 +382,6 @@ func (s *Server) ActualizarPaquete(ctx context.Context, in *Message) (*MessageRe
 
 	}
 
-	return &MessageResponse{Respuesta: "Paquete actualizado : %s"}, nil
+	return &MessageResponse{Respuesta: "Paquete actualizado"}, nil
 
 }

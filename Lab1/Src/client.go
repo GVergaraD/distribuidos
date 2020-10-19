@@ -84,11 +84,11 @@ func main() {
 					}
 
 					id, producto, valor, tienda, destino, prioritario := post[0], post[1], post[2], post[3], post[4], "-1"
-					response, err := c.IngresarOrden(context.Background(), &chat.Message{Mensaje: id + "#" + producto + "#" + valor + "#" + tienda + "#" + destino + "#" + prioritario})
+					_, err = c.IngresarOrden(context.Background(), &chat.Message{Mensaje: id + "#" + producto + "#" + valor + "#" + tienda + "#" + destino + "#" + prioritario})
 					if err != nil {
 						log.Fatalf("Error al enviar la orden: %s", err)
 					}
-					log.Printf("Orden ingresada, numero de seguimiento: %s", response.Respuesta)
+					log.Printf("Orden ingresada")
 					time.Sleep(time.Duration(tiempo) * time.Second)
 				}
 			}

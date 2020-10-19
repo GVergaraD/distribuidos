@@ -15,7 +15,7 @@ import (
 	"github.com/tutorialedge/go-grpc-tutorial/chat"
 )
 
-// retail variable diabla
+// Variables para gestionar los paquetes en los camiones
 var retail int
 var prioritario int
 var normal int
@@ -64,20 +64,24 @@ func main() {
 	p := chat.NewPedirClient(conn)
 	a := chat.NewActualizarClient(conn)
 
-	_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: "1#0#0#Entregado"})
-	if err != nil {
-		log.Fatalf("Error al actualizar paquete: %s", err)
+	row := []string{"id-paquete", "tipo", "valor", "origen", "destino", "intentos", "fecha-entrega"}
+
+	archivos := []string{"camion1.csv", "camion2.csv", "camion3.csv"}
+
+	for i := 0; i < 3; i++ {
+
+		csvfile, err := os.OpenFile(archivos[i], os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+		if err != nil {
+			log.Fatalf("failed creating file: %s", err)
+		}
+
+		csvwriter := csv.NewWriter(csvfile)
+		csvwriter.Write(row)
+		csvwriter.Flush()
+		csvfile.Close()
 	}
 
-	_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: "2#0#0#Entregado"})
-	if err != nil {
-		log.Fatalf("Error al actualizar paquete: %s", err)
-	}
-
-	_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: "3#0#0#Entregado"})
-	if err != nil {
-		log.Fatalf("Error al actualizar paquete: %s", err)
-	}
 	//ejemplo de pedir un paquete
 	//respuesta, err := p.PedirPaquete(context.Background(), &chat.Message{Mensaje: "Retail"})
 	//if err != nil {
@@ -86,8 +90,6 @@ func main() {
 	//log.Printf("Respuesta de logistica: %s", respuesta.ID)
 	//log.Printf("Respuesta de logistica: %s", response.ID, response.Tipo, response.Valor, response.Origen, response.Destino, response.Intentos (este es un string por el momento))
 	// Estado inicial, los 3 camiones se encuentran disponibles
-
-	// Capacidad de cada camion
 
 	var ch chan string = make(chan string)
 	var ch2 chan string = make(chan string)
@@ -151,6 +153,10 @@ func main() {
 					valor1 = respuesta1.Valor
 					origen1 = respuesta1.Origen
 					destino1 = respuesta1.Destino
+					_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(0) + "#En camino"})
+					if err != nil {
+						log.Fatalf("Error al actualizar paquete: %s", err)
+					}
 				}
 				//time.Sleep(200 * time.Millisecond)
 				select {
@@ -172,6 +178,10 @@ func main() {
 							valor2 = respuesta2.Valor
 							origen2 = respuesta2.Origen
 							destino2 = respuesta2.Destino
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(0) + "#En camino"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							fmt.Println("2do paquete recibido")
 						}
 					}
@@ -193,6 +203,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
@@ -202,6 +216,10 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p11 = 0
 						}
 					case tipo11 == "Prioritario":
@@ -212,6 +230,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
@@ -223,12 +245,20 @@ func main() {
 							case p11-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p11 = 0
 						}
 					}
@@ -242,6 +272,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
@@ -251,6 +285,10 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p11 = 0
 						}
 					case tipo11 == "Prioritario":
@@ -261,6 +299,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
@@ -272,12 +314,20 @@ func main() {
 							case p11-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p11 = 0
 						}
 					}
@@ -290,6 +340,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p12 = 0
 								break
 							}
@@ -299,6 +353,10 @@ func main() {
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p12 = 0
 						}
 					case tipo12 == "Prioritario":
@@ -309,6 +367,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p12 = 0
 								break
 							}
@@ -320,12 +382,20 @@ func main() {
 							case p12-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p12 = 0
 								break
 							}
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p12 = 0
 						}
 					}
@@ -339,6 +409,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p12 = 0
 								break
 							}
@@ -348,6 +422,10 @@ func main() {
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p12 = 0
 						}
 					case tipo12 == "Prioritario":
@@ -358,6 +436,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p12 = 0
 								break
 							}
@@ -369,12 +451,20 @@ func main() {
 							case p12-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p12 = 0
 								break
 							}
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p12 = 0
 						}
 					}
@@ -387,6 +477,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
@@ -396,6 +490,10 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p11 = 0
 						}
 					case tipo11 == "Prioritario":
@@ -406,6 +504,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
@@ -417,12 +519,20 @@ func main() {
 							case p11-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p11 = 0
 								break
 							}
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p11 = 0
 						}
 					}
@@ -482,6 +592,10 @@ func main() {
 					valor1 = respuesta1.Valor
 					origen1 = respuesta1.Origen
 					destino1 = respuesta1.Destino
+					_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(0) + "#En camino"})
+					if err != nil {
+						log.Fatalf("Error al actualizar paquete: %s", err)
+					}
 				}
 				//time.Sleep(200 * time.Millisecond)
 				select {
@@ -503,6 +617,10 @@ func main() {
 							valor2 = respuesta2.Valor
 							origen2 = respuesta2.Origen
 							destino2 = respuesta2.Destino
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(0) + "#En camino"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							fmt.Println("2do paquete recibido")
 						}
 					}
@@ -524,6 +642,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
@@ -533,6 +655,10 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p21 = 0
 						}
 					case tipo21 == "Prioritario":
@@ -543,6 +669,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
@@ -554,12 +684,20 @@ func main() {
 							case p21-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p21 = 0
 						}
 					}
@@ -573,6 +711,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
@@ -582,6 +724,10 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p21 = 0
 						}
 					case tipo21 == "Prioritario":
@@ -592,6 +738,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
@@ -603,12 +753,20 @@ func main() {
 							case p21-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p21 = 0
 						}
 					}
@@ -621,6 +779,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p22 = 0
 								break
 							}
@@ -630,6 +792,10 @@ func main() {
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p22 = 0
 						}
 					case tipo22 == "Prioritario":
@@ -640,6 +806,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p22 = 0
 								break
 							}
@@ -651,12 +821,20 @@ func main() {
 							case p22-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p22 = 0
 								break
 							}
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p22 = 0
 						}
 					}
@@ -670,6 +848,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p22 = 0
 								break
 							}
@@ -679,6 +861,10 @@ func main() {
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p22 = 0
 						}
 					case tipo22 == "Prioritario":
@@ -689,6 +875,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p22 = 0
 								break
 							}
@@ -700,12 +890,20 @@ func main() {
 							case p22-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p22 = 0
 								break
 							}
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p22 = 0
 						}
 					}
@@ -718,6 +916,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
@@ -727,6 +929,10 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p21 = 0
 						}
 					case tipo21 == "Prioritario":
@@ -737,6 +943,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
@@ -748,12 +958,20 @@ func main() {
 							case p21-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p21 = 0
 								break
 							}
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p21 = 0
 						}
 					}
@@ -762,6 +980,9 @@ func main() {
 				//fmt.Println("Paquete en la cola")
 			}
 			capacidad2 = 2
+			intentos = 1
+			intentos2 = 1
+
 		}
 	}()
 	go func() { //camion 3
@@ -809,6 +1030,10 @@ func main() {
 					valor1 = respuesta1.Valor
 					origen1 = respuesta1.Origen
 					destino1 = respuesta1.Destino
+					_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(0) + "#En camino"})
+					if err != nil {
+						log.Fatalf("Error al actualizar paquete: %s", err)
+					}
 				}
 				//time.Sleep(200 * time.Millisecond)
 				select {
@@ -830,6 +1055,10 @@ func main() {
 							valor2 = respuesta2.Valor
 							origen2 = respuesta2.Origen
 							destino2 = respuesta2.Destino
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(0) + "#En camino"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							fmt.Println("2do paquete recibido")
 						}
 					}
@@ -851,6 +1080,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -862,12 +1095,20 @@ func main() {
 							case p31-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p31 = 0
 						}
 					case tipo31 == "Prioritario":
@@ -878,6 +1119,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -889,12 +1134,20 @@ func main() {
 							case p31-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p31 = 0
 						}
 					}
@@ -908,6 +1161,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -919,12 +1176,20 @@ func main() {
 							case p31-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p31 = 0
 						}
 					case tipo31 == "Prioritario":
@@ -935,6 +1200,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -946,12 +1215,20 @@ func main() {
 							case p31-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p31 = 0
 						}
 					}
@@ -964,6 +1241,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -975,12 +1256,20 @@ func main() {
 							case p32-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
 						}
 						if p32 != 0 {
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p32 = 0
 						}
 					case tipo32 == "Prioritario":
@@ -991,6 +1280,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -1002,6 +1295,10 @@ func main() {
 							case p32-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -1009,6 +1306,10 @@ func main() {
 						if p32 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p32 = 0
 						}
 					}
@@ -1022,6 +1323,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -1033,6 +1338,10 @@ func main() {
 							case p32-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -1040,6 +1349,10 @@ func main() {
 						if p32 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p32 = 0
 						}
 					case tipo32 == "Prioritario":
@@ -1050,6 +1363,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -1061,6 +1378,10 @@ func main() {
 							case p32-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p32 = 0
 								break
 							}
@@ -1068,6 +1389,10 @@ func main() {
 						if p32 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p32 = 0
 						}
 					}
@@ -1080,6 +1405,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -1091,6 +1420,10 @@ func main() {
 							case p31-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -1098,6 +1431,10 @@ func main() {
 						if p31 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p31 = 0
 						}
 					case tipo31 == "Prioritario":
@@ -1108,6 +1445,10 @@ func main() {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -1119,6 +1460,10 @@ func main() {
 							case p31-10 < 0:
 								fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								if err != nil {
+									log.Fatalf("Error al actualizar paquete: %s", err)
+								}
 								p31 = 0
 								break
 							}
@@ -1126,6 +1471,10 @@ func main() {
 						if p31 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							if err != nil {
+								log.Fatalf("Error al actualizar paquete: %s", err)
+							}
 							p31 = 0
 						}
 					}
@@ -1135,6 +1484,8 @@ func main() {
 				//fmt.Println("Paquete en la cola")
 			}
 			capacidad3 = 2
+			intentos = 1
+			intentos2 = 1
 		}
 
 	}()
@@ -1504,7 +1855,7 @@ func main() {
 				}
 			}
 
-			time.Sleep(time.Second * 2)
+			time.Sleep(100 * time.Millisecond)
 
 			//retail, err := strconv.Atoi(response.Retail)
 			//if err != nil {

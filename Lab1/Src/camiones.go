@@ -19,6 +19,9 @@ import (
 var retail int
 var prioritario int
 var normal int
+var random1 int = 0
+var random2 int = 0
+var random3 int = 0
 var p11 int = 0
 var p12 int = 0
 var p21 int = 0
@@ -110,7 +113,7 @@ func main() {
 	//defer close(ch2)
 	go func() { //camion 1
 		capacidad1 := 2
-		random := 0
+		random1 := 0
 		intentos := 1
 		intentos2 := 1
 		var id1 string
@@ -193,13 +196,15 @@ func main() {
 				//funcion para entregar paquetes
 				//se debe ver cual genera mas ingreso
 				switch {
-				case p12 == 0: //lego solo 1 paquete
+				case p12 == 0: //llego solo 1 paquete
 					switch {
 					case tipo11 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -216,7 +221,7 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -225,8 +230,10 @@ func main() {
 					case tipo11 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -238,14 +245,15 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p11-10 > 0:
+
+							if p11-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p11-10 < 0:
+							}
+							if p11-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -255,7 +263,7 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -267,8 +275,10 @@ func main() {
 					case tipo11 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -285,7 +295,7 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -294,8 +304,10 @@ func main() {
 					case tipo11 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -307,14 +319,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p11-10 > 0:
+							if p11-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p11-10 < 0:
+							}
+							if p11-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -324,7 +336,7 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -335,8 +347,10 @@ func main() {
 					case tipo12 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -353,7 +367,7 @@ func main() {
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -362,8 +376,10 @@ func main() {
 					case tipo12 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -375,14 +391,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p12-10 > 0:
+							if p12-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p12-10 < 0:
+							}
+							if p12-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -392,7 +408,7 @@ func main() {
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -404,8 +420,10 @@ func main() {
 					case tipo12 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -422,7 +440,7 @@ func main() {
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -431,8 +449,10 @@ func main() {
 					case tipo12 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -444,14 +464,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p12-10 > 0:
+							if p12-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p12-10 < 0:
+							}
+							if p12-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -461,7 +481,7 @@ func main() {
 						}
 						if p12 != 0 {
 							savearchivo("camion1.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion1#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -472,8 +492,10 @@ func main() {
 					case tipo11 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -490,7 +512,7 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -499,8 +521,10 @@ func main() {
 					case tipo11 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s1 := rand.NewSource(time.Now().UnixNano())
+							r1 := rand.New(s1)
+							random1 = r1.Intn(5)
+							if random1 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -512,14 +536,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p11-10 > 0:
+							if p11-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p11-10 < 0:
+							}
+							if p11-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -529,7 +553,7 @@ func main() {
 						}
 						if p11 != 0 {
 							savearchivo("camion1.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion1#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -548,7 +572,7 @@ func main() {
 	}()
 	go func() { //camion 2
 		capacidad2 := 2
-		random := 0
+		random2 := 0
 		intentos := 1
 		intentos2 := 1
 		var id1 string
@@ -637,8 +661,10 @@ func main() {
 					case tipo21 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -655,7 +681,7 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -664,8 +690,10 @@ func main() {
 					case tipo21 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -677,14 +705,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p21-10 > 0:
+							if p21-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p21-10 < 0:
+							}
+							if p21-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -694,7 +722,7 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -706,8 +734,10 @@ func main() {
 					case tipo21 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -724,7 +754,7 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -733,8 +763,10 @@ func main() {
 					case tipo21 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -746,14 +778,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p21-10 > 0:
+							if p21-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p21-10 < 0:
+							}
+							if p21-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -763,7 +795,7 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -774,8 +806,10 @@ func main() {
 					case tipo22 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -792,7 +826,7 @@ func main() {
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -801,8 +835,10 @@ func main() {
 					case tipo22 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -814,14 +850,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p22-10 > 0:
+							if p22-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p22-10 < 0:
+							}
+							if p22-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -831,7 +867,7 @@ func main() {
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -843,8 +879,10 @@ func main() {
 					case tipo22 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -861,7 +899,7 @@ func main() {
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -870,8 +908,10 @@ func main() {
 					case tipo22 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -883,14 +923,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p22-10 > 0:
+							if p22-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p22-10 < 0:
+							}
+							if p22-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -900,7 +940,7 @@ func main() {
 						}
 						if p22 != 0 {
 							savearchivo("camion2.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion2#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -911,8 +951,10 @@ func main() {
 					case tipo21 == "Retail":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -929,7 +971,7 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -938,8 +980,10 @@ func main() {
 					case tipo21 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s2 := rand.NewSource(time.Now().UnixNano())
+							r2 := rand.New(s2)
+							random2 = r2.Intn(5)
+							if random2 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION2
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -951,14 +995,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p21-10 > 0:
+							if p21-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p21-10 < 0:
+							}
+							if p21-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -968,7 +1012,7 @@ func main() {
 						}
 						if p21 != 0 {
 							savearchivo("camion2.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion2#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -987,7 +1031,7 @@ func main() {
 	}()
 	go func() { //camion 3
 		capacidad3 := 2
-		random := 0
+		random3 := 0
 		intentos := 1
 		intentos2 := 1
 		var id1 string
@@ -1075,8 +1119,10 @@ func main() {
 					case tipo31 == "Normal":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -1088,14 +1134,15 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p31-10 > 0:
+
+							if p31-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p31-10 < 0:
+							}
+							if p31-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1105,7 +1152,7 @@ func main() {
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1114,8 +1161,10 @@ func main() {
 					case tipo31 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -1127,14 +1176,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p31-10 > 0:
+							if p31-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p31-10 < 0:
+							}
+							if p31-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1144,7 +1193,7 @@ func main() {
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1156,8 +1205,10 @@ func main() {
 					case tipo31 == "Normal":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -1169,14 +1220,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p31-10 > 0:
+							if p31-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p31-10 < 0:
+							}
+							if p31-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1186,7 +1237,7 @@ func main() {
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1195,8 +1246,10 @@ func main() {
 					case tipo31 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -1208,14 +1261,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p31-10 > 0:
+							if p31-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p31-10 < 0:
+							}
+							if p31-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1225,7 +1278,7 @@ func main() {
 						}
 						if p31 != 0 {
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1236,8 +1289,10 @@ func main() {
 					case tipo32 == "Normal":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -1249,14 +1304,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p32-10 > 0:
+							if p32-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p32-10 < 0:
+							}
+							if p32-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1266,7 +1321,7 @@ func main() {
 						}
 						if p32 != 0 {
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1275,8 +1330,10 @@ func main() {
 					case tipo32 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -1288,14 +1345,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p32-10 > 0:
+							if p32-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p32-10 < 0:
+							}
+							if p32-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1306,7 +1363,7 @@ func main() {
 						if p32 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1318,8 +1375,10 @@ func main() {
 					case tipo32 == "Normal":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -1331,14 +1390,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p32-10 > 0:
+							if p32-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p32-10 < 0:
+							}
+							if p32-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1349,7 +1408,7 @@ func main() {
 						if p32 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1358,8 +1417,10 @@ func main() {
 					case tipo32 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 0)
@@ -1371,14 +1432,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p32-10 > 0:
+							if p32-10 > 0 {
 								intentos2++
 								//fmt.Println("Reintento")
-							case p32-10 < 0:
+							}
+							if p32-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1389,7 +1450,7 @@ func main() {
 						if p32 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete2,intentos,fecha)
 							savearchivo("camion3.csv", id2, tipo2, valor2, origen2, destino2, intentos2, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id2 + "#camion3#" + strconv.Itoa(intentos2) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1400,8 +1461,10 @@ func main() {
 					case tipo31 == "Normal":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -1413,14 +1476,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p31-10 > 0:
+							if p31-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p31-10 < 0:
+							}
+							if p31-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1431,7 +1494,7 @@ func main() {
 						if p31 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1440,8 +1503,10 @@ func main() {
 					case tipo31 == "Prioritario":
 						for reintento := 0; reintento < 3; reintento++ {
 							time.Sleep(time.Second * time.Duration(entrega))
-							random = rand.Intn(5)
-							if random < 4 {
+							s3 := rand.NewSource(time.Now().UnixNano())
+							r3 := rand.New(s3)
+							random3 = r3.Intn(5)
+							if random3 < 4 {
 								//exitoso
 								//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 0)
@@ -1453,14 +1518,14 @@ func main() {
 								break
 							}
 							//fmt.Println("intento fallido")
-							switch {
-							case p31-10 > 0:
+							if p31-10 > 0 {
 								intentos++
 								//fmt.Println("Reintento")
-							case p31-10 < 0:
+							}
+							if p31-10 < 0 {
 								//fmt.Println("No lo vale")
 								savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+								_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 								if err != nil {
 									log.Fatalf("Error al actualizar paquete: %s", err)
 								}
@@ -1471,7 +1536,7 @@ func main() {
 						if p31 != 0 {
 							//ESCRIBIR ARCHIVO CAMION3(paquete1,intentos,fecha)
 							savearchivo("camion3.csv", id1, tipo1, valor1, origen1, destino1, intentos, 1)
-							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No Entregado"})
+							_, err = a.ActualizarPaquete(context.Background(), &chat.Message{Mensaje: id1 + "#camion3#" + strconv.Itoa(intentos) + "#No entregado"})
 							if err != nil {
 								log.Fatalf("Error al actualizar paquete: %s", err)
 							}
@@ -1481,7 +1546,7 @@ func main() {
 				}
 				//fmt.Println("Camion 3, Paquete entregado")
 
-				//fmt.Println("Paquete en la cola")
+				////fmt.Println("Paquete en la cola")
 			}
 			capacidad3 = 2
 			intentos = 1

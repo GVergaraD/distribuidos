@@ -4,19 +4,19 @@ Gabriel Vergara 201673605-0
 Los archivos fueron clonados desde un repositorio(github) con git clone
 Para ejecturar los archivos es necesario hacer lo siguiente:
 	-dist81->Logistica
-	desde carpeta distribuidos/Lab/Src 
+	desde carpeta distribuidos/Lab/Src/logistica 
 	correr ./make
 
 	-dist82->Finanzas
-	desde carpeta distribuidos/Lab/Src 
+	desde carpeta distribuidos/Lab/Src/financiero
 	correr ./make
 
 	-dist83->Cliente
-	desde carpeta distribuidos/Lab/Src 
+	desde carpeta distribuidos/Lab/Src/cliente 
 	correr ./make
 
 	-dist84->Camiones
-	desde carpeta distribuidos/Lab/Src 
+	desde carpeta distribuidos/Lab/Src/camiones 
 	correr ./make
 
 Consideraciones:

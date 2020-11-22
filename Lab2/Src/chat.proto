@@ -1,0 +1,42 @@
+syntax = "proto3";
+package chat;
+
+message Libro {
+  string Nombre = 1;
+  string Partes = 2;
+}
+
+message Chunks{
+  string ID = 1;
+  string FileName = 2;
+  bytes Chunk = 3;
+}
+
+message MessageResponse {
+  string Respuesta = 1;
+}
+
+message Message{
+  string Mensaje = 1;
+}
+
+message Node{
+  string IDNode = 1;
+}
+
+// Servicios
+service LibroService {
+  rpc PasarLibro(Libro) returns (MessageResponse) {}
+}
+
+service PropuestaService {
+  rpc GenProp(Node) returns (MessageResponse) {}
+}
+
+service ChunkService {
+  rpc PasarChunk(Chunks) returns (MessageResponse) {}
+}
+
+service ContacarService {
+  rpc ContacarNode(Message) returns (MessageResponse) {}
+}

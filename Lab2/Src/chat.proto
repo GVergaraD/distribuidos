@@ -2,8 +2,9 @@ syntax = "proto3";
 package chat;
 
 message Libro {
-  string Nombre = 1;
-  string Partes = 2;
+  string ID = 1;
+  string Nombre = 2;
+  string Partes = 3;
 }
 
 message Chunks{

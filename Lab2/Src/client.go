@@ -29,11 +29,11 @@ func random() int {
 
 func split() {
 
-	//random := random()
+	random := random()
 	//conn, err := grpc.Dial(Nodes[random], grpc.WithInsecure())
 
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(Nodes[0], grpc.WithInsecure())
+	conn, err := grpc.Dial(Nodes[random], grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
@@ -72,7 +72,7 @@ func split() {
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	TotalParts := strconv.FormatUint(totalPartsNum, 10)
 
-	response, err := l.PasarLibro(context.Background(), &chat.Libro{Nombre: libro, Partes: TotalParts})
+	response, err := l.PasarLibro(context.Background(), &chat.Libro{ID: strconv.Itoa(random), Nombre: libro, Partes: TotalParts})
 	if err != nil {
 		log.Fatalf("Error al enviar libro")
 	}
@@ -90,7 +90,7 @@ func split() {
 		// write to disk
 		fileName := libro + "_" + strconv.FormatUint(i, 10)
 
-		response, err := c.PasarChunk(context.Background(), &chat.Chunks{FileName: fileName, Chunk: partBuffer})
+		response, err := c.PasarChunk(context.Background(), &chat.Chunks{ID: strconv.Itoa(random), FileName: fileName, Chunk: partBuffer})
 		if err != nil {
 			log.Fatalf("Error al enviar chunk")
 		}
@@ -102,7 +102,7 @@ func split() {
 	// Avisa que se terminaron de pasar los chunks en el DataNode para que este genere la propuesta
 
 	// pasar el random a string
-	_, err = p.GenProp(context.Background(), &chat.Node{IDNode: "0"})
+	_, err = p.GenProp(context.Background(), &chat.Node{IDNode: strconv.Itoa(random)})
 	if err != nil {
 		log.Fatalf("Error al enviar chunk")
 	}

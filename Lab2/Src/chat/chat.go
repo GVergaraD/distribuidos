@@ -136,7 +136,7 @@ func (s *Server) PasarLibro(ctx context.Context, in *Libro) (*MessageResponse, e
 // PasarChunk -> funcion que recibe los chunks desde el cliente
 func (s *Server) PasarChunk(ctx context.Context, in *Chunks) (*MessageResponse, error) {
 
-	log.Printf("Chunk del cliente: %s", in.FileName)
+	//log.Printf("Chunk del cliente: %s", in.FileName)
 
 	_, err := os.Create(in.FileName)
 
@@ -196,6 +196,7 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 			// En principio reparte 1 chunk a cada nodo y el resto lo reparte de forma aleatoria
 			for i := 0; i < len(nodos); i++ {
 				propuesta[i] = nodos[i]
+				log.Printf("Nodo escogido: %d", nodos[i])
 				// Al principio tenemos 3 nodos
 				// -> propuesta[0] = primer nodo de la lista
 				// -> propuesta[1] = segundo nodo de la lista
@@ -204,6 +205,7 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 			//enviar de forma random las siguientes
 			for i := len(nodos); i < ChunksNode[IDNodo].Len(); i++ {
 				propuesta[i] = ElegirNode(nodos)
+				log.Printf("Nodo escogido: %d", ElegirNode(nodos))
 				// -> propuesta[3] = random
 				// ...
 			}

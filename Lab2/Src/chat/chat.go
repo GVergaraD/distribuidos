@@ -226,8 +226,8 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 					distribuir(e.Value.(string), Nodes[propuesta[j]])
 					// Eliminar el archivo
 
-					os.Remove(e.Value.(string))
-					log.Fatalf("Archivo eliminado")
+					//os.Remove(e.Value.(string))
+					//log.Fatalf("Archivo eliminado")
 				}
 				ChunksNode1.Remove(e)
 				j++

@@ -197,6 +197,53 @@ func (x *MessageResponse) GetRespuesta() string {
 	return ""
 }
 
+type Response struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Respuesta []string `protobuf:"bytes,1,rep,name=Respuesta,proto3" json:"Respuesta,omitempty"`
+}
+
+func (x *Response) Reset() {
+	*x = Response{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_chat_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Response) ProtoMessage() {}
+
+func (x *Response) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Response.ProtoReflect.Descriptor instead.
+func (*Response) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Response) GetRespuesta() []string {
+	if x != nil {
+		return x.Respuesta
+	}
+	return nil
+}
+
 type Message struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -208,7 +255,7 @@ type Message struct {
 func (x *Message) Reset() {
 	*x = Message{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_chat_proto_msgTypes[3]
+		mi := &file_chat_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -221,7 +268,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[3]
+	mi := &file_chat_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -234,12 +281,67 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_chat_proto_rawDescGZIP(), []int{3}
+	return file_chat_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Message) GetMensaje() string {
 	if x != nil {
 		return x.Mensaje
+	}
+	return ""
+}
+
+type Consult struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Tipo   string `protobuf:"bytes,1,opt,name=Tipo,proto3" json:"Tipo,omitempty"`
+	Titulo string `protobuf:"bytes,2,opt,name=Titulo,proto3" json:"Titulo,omitempty"`
+}
+
+func (x *Consult) Reset() {
+	*x = Consult{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_chat_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Consult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Consult) ProtoMessage() {}
+
+func (x *Consult) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Consult.ProtoReflect.Descriptor instead.
+func (*Consult) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *Consult) GetTipo() string {
+	if x != nil {
+		return x.Tipo
+	}
+	return ""
+}
+
+func (x *Consult) GetTitulo() string {
+	if x != nil {
+		return x.Titulo
 	}
 	return ""
 }
@@ -255,7 +357,7 @@ type Node struct {
 func (x *Node) Reset() {
 	*x = Node{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_chat_proto_msgTypes[4]
+		mi := &file_chat_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -268,7 +370,7 @@ func (x *Node) String() string {
 func (*Node) ProtoMessage() {}
 
 func (x *Node) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[4]
+	mi := &file_chat_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -281,12 +383,67 @@ func (x *Node) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Node.ProtoReflect.Descriptor instead.
 func (*Node) Descriptor() ([]byte, []int) {
-	return file_chat_proto_rawDescGZIP(), []int{4}
+	return file_chat_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Node) GetIDNode() string {
 	if x != nil {
 		return x.IDNode
+	}
+	return ""
+}
+
+type Log struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Mensaje1 string `protobuf:"bytes,1,opt,name=Mensaje1,proto3" json:"Mensaje1,omitempty"`
+	Mensaje2 string `protobuf:"bytes,2,opt,name=Mensaje2,proto3" json:"Mensaje2,omitempty"`
+}
+
+func (x *Log) Reset() {
+	*x = Log{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_chat_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Log) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Log) ProtoMessage() {}
+
+func (x *Log) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Log.ProtoReflect.Descriptor instead.
+func (*Log) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *Log) GetMensaje1() string {
+	if x != nil {
+		return x.Mensaje1
+	}
+	return ""
+}
+
+func (x *Log) GetMensaje2() string {
+	if x != nil {
+		return x.Mensaje2
 	}
 	return ""
 }
@@ -307,11 +464,21 @@ var file_chat_proto_rawDesc = []byte{
 	0x52, 0x05, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x22, 0x2f, 0x0a, 0x0f, 0x4d, 0x65, 0x73, 0x73, 0x61,
 	0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x52, 0x65,
 	0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x52,
-	0x65, 0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x22, 0x23, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x22, 0x1e, 0x0a,
-	0x04, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x49, 0x44, 0x4e, 0x6f, 0x64, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x49, 0x44, 0x4e, 0x6f, 0x64, 0x65, 0x32, 0x42, 0x0a,
+	0x65, 0x73, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x22, 0x28, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x52, 0x65, 0x73, 0x70, 0x75, 0x65, 0x73, 0x74,
+	0x61, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x52, 0x65, 0x73, 0x70, 0x75, 0x65, 0x73,
+	0x74, 0x61, 0x22, 0x23, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x18, 0x0a,
+	0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x22, 0x35, 0x0a, 0x07, 0x43, 0x6f, 0x6e, 0x73, 0x75,
+	0x6c, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x54, 0x69, 0x70, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x54, 0x69, 0x70, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x54, 0x69, 0x74, 0x75, 0x6c, 0x6f,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x54, 0x69, 0x74, 0x75, 0x6c, 0x6f, 0x22, 0x1e,
+	0x0a, 0x04, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x49, 0x44, 0x4e, 0x6f, 0x64, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x49, 0x44, 0x4e, 0x6f, 0x64, 0x65, 0x22, 0x3d,
+	0x0a, 0x03, 0x4c, 0x6f, 0x67, 0x12, 0x1a, 0x0a, 0x08, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65,
+	0x31, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65,
+	0x31, 0x12, 0x1a, 0x0a, 0x08, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x32, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x08, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x32, 0x32, 0x42, 0x0a,
 	0x0c, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x32, 0x0a,
 	0x0a, 0x50, 0x61, 0x73, 0x61, 0x72, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x12, 0x0b, 0x2e, 0x63, 0x68,
 	0x61, 0x74, 0x2e, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
@@ -320,16 +487,28 @@ var file_chat_proto_rawDesc = []byte{
 	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2e, 0x0a, 0x07, 0x47, 0x65, 0x6e, 0x50, 0x72, 0x6f, 0x70,
 	0x12, 0x0a, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4e, 0x6f, 0x64, 0x65, 0x1a, 0x15, 0x2e, 0x63,
 	0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x43, 0x0a, 0x0c, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x53, 0x65,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x78, 0x0a, 0x0c, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x53, 0x65,
 	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x33, 0x0a, 0x0a, 0x50, 0x61, 0x73, 0x61, 0x72, 0x43, 0x68,
 	0x75, 0x6e, 0x6b, 0x12, 0x0c, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x43, 0x68, 0x75, 0x6e, 0x6b,
 	0x73, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x49, 0x0a, 0x0f, 0x43, 0x6f,
-	0x6e, 0x74, 0x61, 0x63, 0x61, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x36, 0x0a,
-	0x0c, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x63, 0x61, 0x72, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x0d, 0x2e,
-	0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e, 0x63,
-	0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x33, 0x0a, 0x0a, 0x50, 0x65,
+	0x64, 0x69, 0x72, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x12, 0x0c, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
+	0x43, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32,
+	0x4b, 0x0a, 0x10, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x61, 0x72, 0x53, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x12, 0x37, 0x0a, 0x0d, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x61, 0x72,
+	0x4e, 0x6f, 0x64, 0x65, 0x12, 0x0d, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x40, 0x0a, 0x10,
+	0x43, 0x6f, 0x6e, 0x73, 0x75, 0x6c, 0x74, 0x61, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x12, 0x2c, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x73, 0x75, 0x6c, 0x74, 0x61, 0x72, 0x12, 0x0d, 0x2e,
+	0x63, 0x68, 0x61, 0x74, 0x2e, 0x43, 0x6f, 0x6e, 0x73, 0x75, 0x6c, 0x74, 0x1a, 0x0e, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x3f,
+	0x0a, 0x0a, 0x4c, 0x6f, 0x67, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x31, 0x0a, 0x0b,
+	0x45, 0x73, 0x63, 0x72, 0x69, 0x62, 0x69, 0x72, 0x4c, 0x6f, 0x67, 0x12, 0x09, 0x2e, 0x63, 0x68,
+	0x61, 0x74, 0x2e, 0x4c, 0x6f, 0x67, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -344,25 +523,34 @@ func file_chat_proto_rawDescGZIP() []byte {
 	return file_chat_proto_rawDescData
 }
 
-var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_chat_proto_goTypes = []interface{}{
 	(*Libro)(nil),           // 0: chat.Libro
 	(*Chunks)(nil),          // 1: chat.Chunks
 	(*MessageResponse)(nil), // 2: chat.MessageResponse
-	(*Message)(nil),         // 3: chat.Message
-	(*Node)(nil),            // 4: chat.Node
+	(*Response)(nil),        // 3: chat.Response
+	(*Message)(nil),         // 4: chat.Message
+	(*Consult)(nil),         // 5: chat.Consult
+	(*Node)(nil),            // 6: chat.Node
+	(*Log)(nil),             // 7: chat.Log
 }
 var file_chat_proto_depIdxs = []int32{
 	0, // 0: chat.LibroService.PasarLibro:input_type -> chat.Libro
-	4, // 1: chat.PropuestaService.GenProp:input_type -> chat.Node
+	6, // 1: chat.PropuestaService.GenProp:input_type -> chat.Node
 	1, // 2: chat.ChunkService.PasarChunk:input_type -> chat.Chunks
-	3, // 3: chat.ContacarService.ContacarNode:input_type -> chat.Message
-	2, // 4: chat.LibroService.PasarLibro:output_type -> chat.MessageResponse
-	2, // 5: chat.PropuestaService.GenProp:output_type -> chat.MessageResponse
-	2, // 6: chat.ChunkService.PasarChunk:output_type -> chat.MessageResponse
-	2, // 7: chat.ContacarService.ContacarNode:output_type -> chat.MessageResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	1, // 3: chat.ChunkService.PedirChunk:input_type -> chat.Chunks
+	4, // 4: chat.ContactarService.ContactarNode:input_type -> chat.Message
+	5, // 5: chat.ConsultarService.Consultar:input_type -> chat.Consult
+	7, // 6: chat.LogService.EscribirLog:input_type -> chat.Log
+	2, // 7: chat.LibroService.PasarLibro:output_type -> chat.MessageResponse
+	2, // 8: chat.PropuestaService.GenProp:output_type -> chat.MessageResponse
+	2, // 9: chat.ChunkService.PasarChunk:output_type -> chat.MessageResponse
+	2, // 10: chat.ChunkService.PedirChunk:output_type -> chat.MessageResponse
+	2, // 11: chat.ContactarService.ContactarNode:output_type -> chat.MessageResponse
+	3, // 12: chat.ConsultarService.Consultar:output_type -> chat.Response
+	2, // 13: chat.LogService.EscribirLog:output_type -> chat.MessageResponse
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -411,7 +599,7 @@ func file_chat_proto_init() {
 			}
 		}
 		file_chat_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Message); i {
+			switch v := v.(*Response); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -423,7 +611,43 @@ func file_chat_proto_init() {
 			}
 		}
 		file_chat_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Message); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_chat_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Consult); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_chat_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Node); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_chat_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Log); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -441,9 +665,9 @@ func file_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_chat_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   8,
 			NumExtensions: 0,
-			NumServices:   4,
+			NumServices:   6,
 		},
 		GoTypes:           file_chat_proto_goTypes,
 		DependencyIndexes: file_chat_proto_depIdxs,
@@ -612,6 +836,7 @@ var _PropuestaService_serviceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ChunkServiceClient interface {
 	PasarChunk(ctx context.Context, in *Chunks, opts ...grpc.CallOption) (*MessageResponse, error)
+	PedirChunk(ctx context.Context, in *Chunks, opts ...grpc.CallOption) (*MessageResponse, error)
 }
 
 type chunkServiceClient struct {
@@ -631,9 +856,19 @@ func (c *chunkServiceClient) PasarChunk(ctx context.Context, in *Chunks, opts ..
 	return out, nil
 }
 
+func (c *chunkServiceClient) PedirChunk(ctx context.Context, in *Chunks, opts ...grpc.CallOption) (*MessageResponse, error) {
+	out := new(MessageResponse)
+	err := c.cc.Invoke(ctx, "/chat.ChunkService/PedirChunk", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChunkServiceServer is the server API for ChunkService service.
 type ChunkServiceServer interface {
 	PasarChunk(context.Context, *Chunks) (*MessageResponse, error)
+	PedirChunk(context.Context, *Chunks) (*MessageResponse, error)
 }
 
 // UnimplementedChunkServiceServer can be embedded to have forward compatible implementations.
@@ -642,6 +877,9 @@ type UnimplementedChunkServiceServer struct {
 
 func (*UnimplementedChunkServiceServer) PasarChunk(context.Context, *Chunks) (*MessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PasarChunk not implemented")
+}
+func (*UnimplementedChunkServiceServer) PedirChunk(context.Context, *Chunks) (*MessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PedirChunk not implemented")
 }
 
 func RegisterChunkServiceServer(s *grpc.Server, srv ChunkServiceServer) {
@@ -666,6 +904,24 @@ func _ChunkService_PasarChunk_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChunkService_PedirChunk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Chunks)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChunkServiceServer).PedirChunk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.ChunkService/PedirChunk",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChunkServiceServer).PedirChunk(ctx, req.(*Chunks))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _ChunkService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "chat.ChunkService",
 	HandlerType: (*ChunkServiceServer)(nil),
@@ -674,77 +930,225 @@ var _ChunkService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "PasarChunk",
 			Handler:    _ChunkService_PasarChunk_Handler,
 		},
+		{
+			MethodName: "PedirChunk",
+			Handler:    _ChunkService_PedirChunk_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "chat.proto",
 }
 
-// ContacarServiceClient is the client API for ContacarService service.
+// ContactarServiceClient is the client API for ContactarService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type ContacarServiceClient interface {
-	ContacarNode(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error)
+type ContactarServiceClient interface {
+	ContactarNode(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error)
 }
 
-type contacarServiceClient struct {
+type contactarServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewContacarServiceClient(cc grpc.ClientConnInterface) ContacarServiceClient {
-	return &contacarServiceClient{cc}
+func NewContactarServiceClient(cc grpc.ClientConnInterface) ContactarServiceClient {
+	return &contactarServiceClient{cc}
 }
 
-func (c *contacarServiceClient) ContacarNode(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error) {
+func (c *contactarServiceClient) ContactarNode(ctx context.Context, in *Message, opts ...grpc.CallOption) (*MessageResponse, error) {
 	out := new(MessageResponse)
-	err := c.cc.Invoke(ctx, "/chat.ContacarService/ContacarNode", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/chat.ContactarService/ContactarNode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ContacarServiceServer is the server API for ContacarService service.
-type ContacarServiceServer interface {
-	ContacarNode(context.Context, *Message) (*MessageResponse, error)
+// ContactarServiceServer is the server API for ContactarService service.
+type ContactarServiceServer interface {
+	ContactarNode(context.Context, *Message) (*MessageResponse, error)
 }
 
-// UnimplementedContacarServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedContacarServiceServer struct {
+// UnimplementedContactarServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedContactarServiceServer struct {
 }
 
-func (*UnimplementedContacarServiceServer) ContacarNode(context.Context, *Message) (*MessageResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ContacarNode not implemented")
+func (*UnimplementedContactarServiceServer) ContactarNode(context.Context, *Message) (*MessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ContactarNode not implemented")
 }
 
-func RegisterContacarServiceServer(s *grpc.Server, srv ContacarServiceServer) {
-	s.RegisterService(&_ContacarService_serviceDesc, srv)
+func RegisterContactarServiceServer(s *grpc.Server, srv ContactarServiceServer) {
+	s.RegisterService(&_ContactarService_serviceDesc, srv)
 }
 
-func _ContacarService_ContacarNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ContactarService_ContactarNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ContacarServiceServer).ContacarNode(ctx, in)
+		return srv.(ContactarServiceServer).ContactarNode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chat.ContacarService/ContacarNode",
+		FullMethod: "/chat.ContactarService/ContactarNode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ContacarServiceServer).ContacarNode(ctx, req.(*Message))
+		return srv.(ContactarServiceServer).ContactarNode(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _ContacarService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "chat.ContacarService",
-	HandlerType: (*ContacarServiceServer)(nil),
+var _ContactarService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.ContactarService",
+	HandlerType: (*ContactarServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ContacarNode",
-			Handler:    _ContacarService_ContacarNode_Handler,
+			MethodName: "ContactarNode",
+			Handler:    _ContactarService_ContactarNode_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}
+
+// ConsultarServiceClient is the client API for ConsultarService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ConsultarServiceClient interface {
+	Consultar(ctx context.Context, in *Consult, opts ...grpc.CallOption) (*Response, error)
+}
+
+type consultarServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewConsultarServiceClient(cc grpc.ClientConnInterface) ConsultarServiceClient {
+	return &consultarServiceClient{cc}
+}
+
+func (c *consultarServiceClient) Consultar(ctx context.Context, in *Consult, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/chat.ConsultarService/Consultar", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ConsultarServiceServer is the server API for ConsultarService service.
+type ConsultarServiceServer interface {
+	Consultar(context.Context, *Consult) (*Response, error)
+}
+
+// UnimplementedConsultarServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedConsultarServiceServer struct {
+}
+
+func (*UnimplementedConsultarServiceServer) Consultar(context.Context, *Consult) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Consultar not implemented")
+}
+
+func RegisterConsultarServiceServer(s *grpc.Server, srv ConsultarServiceServer) {
+	s.RegisterService(&_ConsultarService_serviceDesc, srv)
+}
+
+func _ConsultarService_Consultar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Consult)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConsultarServiceServer).Consultar(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.ConsultarService/Consultar",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConsultarServiceServer).Consultar(ctx, req.(*Consult))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _ConsultarService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.ConsultarService",
+	HandlerType: (*ConsultarServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Consultar",
+			Handler:    _ConsultarService_Consultar_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}
+
+// LogServiceClient is the client API for LogService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type LogServiceClient interface {
+	EscribirLog(ctx context.Context, in *Log, opts ...grpc.CallOption) (*MessageResponse, error)
+}
+
+type logServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewLogServiceClient(cc grpc.ClientConnInterface) LogServiceClient {
+	return &logServiceClient{cc}
+}
+
+func (c *logServiceClient) EscribirLog(ctx context.Context, in *Log, opts ...grpc.CallOption) (*MessageResponse, error) {
+	out := new(MessageResponse)
+	err := c.cc.Invoke(ctx, "/chat.LogService/EscribirLog", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// LogServiceServer is the server API for LogService service.
+type LogServiceServer interface {
+	EscribirLog(context.Context, *Log) (*MessageResponse, error)
+}
+
+// UnimplementedLogServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedLogServiceServer struct {
+}
+
+func (*UnimplementedLogServiceServer) EscribirLog(context.Context, *Log) (*MessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EscribirLog not implemented")
+}
+
+func RegisterLogServiceServer(s *grpc.Server, srv LogServiceServer) {
+	s.RegisterService(&_LogService_serviceDesc, srv)
+}
+
+func _LogService_EscribirLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Log)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogServiceServer).EscribirLog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LogService/EscribirLog",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogServiceServer).EscribirLog(ctx, req.(*Log))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _LogService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.LogService",
+	HandlerType: (*LogServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "EscribirLog",
+			Handler:    _LogService_EscribirLog_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

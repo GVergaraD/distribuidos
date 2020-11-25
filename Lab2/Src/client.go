@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc"
@@ -27,10 +28,27 @@ func random() int {
 	return random
 }
 
+func pedir(filename string, node string) {
+
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial(node, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+
+	p := chat.NewChunkServiceClient(conn)
+
+	_, err = p.PedirChunk(context.Background(), &chat.Chunks{FileName: filename})
+	if err != nil {
+		log.Printf("Error al consutar a NameNode")
+	}
+
+}
+
 func split() {
 
 	random := random()
-	//conn, err := grpc.Dial(Nodes[random], grpc.WithInsecure())
 
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(Nodes[random], grpc.WithInsecure())
@@ -43,12 +61,12 @@ func split() {
 	c := chat.NewChunkServiceClient(conn)
 	p := chat.NewPropuestaServiceClient(conn)
 
-	fmt.Print("Nombre de libro a separar: ")
+	fmt.Print("Nombre de libro a subir: ")
 	var libro string
 	fmt.Scanln(&libro)
 	//fmt.Println()
 
-	fileToBeChunked := "./" + libro + ".pdf"
+	fileToBeChunked := "./Libros/" + libro + ".pdf"
 
 	file, err := os.Open(fileToBeChunked)
 
@@ -110,31 +128,8 @@ func split() {
 
 func recombine(libro string, totalPartsNum uint64) {
 
-	//fmt.Println()
-
-	fileToBeChunked := "./" + libro + ".pdf"
-	//fileToBeChunked := "./bigfile.zip" // change here!
-
-	file, err := os.Open(fileToBeChunked)
-
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	defer file.Close()
-	//const fileChunk = 1 * (1 << 20) // 1 MB, change this to your requirement
-
-	// calculate total number of parts the file will be chunked into
-
-	//totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
-
-	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-
-	// just for fun, let's recombine back the chunked files in a new file
-
-	newFileName := "NEW" + libro + ".pdf"
-	_, err = os.Create(newFileName)
+	newFileName := "Descargado_de_Vuamos_" + libro + ".pdf"
+	_, err := os.Create(newFileName)
 
 	if err != nil {
 		fmt.Println(err)
@@ -144,7 +139,7 @@ func recombine(libro string, totalPartsNum uint64) {
 	//set the newFileName file to APPEND MODE!!
 	// open files r and w
 
-	file, err = os.OpenFile(newFileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	file, err := os.OpenFile(newFileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 
 	if err != nil {
 		fmt.Println(err)
@@ -160,7 +155,7 @@ func recombine(libro string, totalPartsNum uint64) {
 	for j := uint64(0); j < totalPartsNum; j++ {
 
 		//read a chunk
-		currentChunkFileName := libro + "_" + strconv.FormatUint(j, 10)
+		currentChunkFileName := "./chunks/" + libro + "_" + strconv.FormatUint(j, 10)
 
 		newFileChunk, err := os.Open(currentChunkFileName)
 
@@ -228,18 +223,91 @@ func recombine(libro string, totalPartsNum uint64) {
 
 func main() {
 
-	fmt.Println("\nComportamiento a seguir (Uploader/Downloader): ")
-	var comportamiento string
-	fmt.Scanln(&comportamiento)
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial(":9004", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
 
-	if comportamiento == "Uploader" {
+	c := chat.NewConsultarServiceClient(conn)
 
-		// Crear un random para ver a que nodo enviar las cosas
-		// Enviar nombre del libro, cantidad de partes y chunks
-		// Enviar un mensaje diciendo que ya se envio todo
+	var value int
 
-		//Generar numero random
-		split()
+	for {
+		fmt.Println("\nIgrese opcion a realizar")
+		fmt.Println("1.- Upload")
+		fmt.Println("2.- Download")
+		fmt.Printf("3.- Salir\n\n")
+		fmt.Scanln(&value)
 
+		if value == 1 {
+
+			split()
+
+		} else if value == 2 {
+
+			for {
+				fmt.Println("\nQue opcion desea realizar: ")
+				fmt.Println("1) Ver listado de libros disponibles")
+				fmt.Println("2) Descargar libro")
+				fmt.Printf("3) Volver\n\n")
+				var option int
+				fmt.Scanln(&option)
+
+				if option == 1 { //Pedir los libros disponibles
+
+					respuesta, err := c.Consultar(context.Background(), &chat.Consult{Tipo: "Libros"})
+					if err != nil {
+						log.Printf("Error al consutar a NameNode")
+					}
+
+					fmt.Println("\nLibros disponibles:\n")
+					for i := 0; i < len(respuesta.Respuesta); i++ {
+						fmt.Println(strconv.Itoa(i+1)+")", respuesta.Respuesta[i])
+					}
+					fmt.Println("")
+
+				} else if option == 2 { //Descargar libro
+
+					fmt.Println("\nIngrese libro a descargar: ")
+					var libro string
+					fmt.Scanln(&libro)
+
+					// Pedimos la info de los chunks al NameNode
+					respuesta, err := c.Consultar(context.Background(), &chat.Consult{Tipo: "Ubicacion", Titulo: libro})
+					if err != nil {
+						log.Printf("Error al consutar a NameNode")
+					}
+
+					// Variables para guardar los chunks y su ubicacion
+					chunks := make([]string, 0, 100)
+					ubicaciones := make([]string, 0, 100)
+
+					// Guardamos los chunks y su ubicacion
+					for i := 0; i < len(respuesta.Respuesta); i++ {
+						respuesta := strings.Split(respuesta.Respuesta[i], " ")
+						chunk, ubicacion := respuesta[0], respuesta[1]
+						chunks = append(chunks, chunk)
+						ubicaciones = append(ubicaciones, ubicacion)
+					}
+
+					//Pedir a los DataNode los chunks en base a su ubicacion
+					for j := 0; j < len(chunks); j++ {
+						fmt.Println(chunks[j], ubicaciones[j])
+						pedir(chunks[j], ubicaciones[j])
+					}
+
+					//Reconstruir el libro
+					recombine(libro, uint64(len(chunks)))
+
+				} else if option == 3 {
+					break
+				}
+			}
+
+		} else if value == 3 {
+			break
+		}
 	}
 }

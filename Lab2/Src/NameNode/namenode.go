@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9001))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9004))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -20,10 +20,8 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 
-	chat.RegisterLibroServiceServer(grpcServer, &s)
-	chat.RegisterChunkServiceServer(grpcServer, &s)
-	chat.RegisterPropuestaServiceServer(grpcServer, &s)
-	chat.RegisterContactarServiceServer(grpcServer, &s)
+	chat.RegisterLogServiceServer(grpcServer, &s)
+	chat.RegisterConsultarServiceServer(grpcServer, &s)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)

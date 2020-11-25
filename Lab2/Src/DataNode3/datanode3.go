@@ -23,7 +23,7 @@ func main() {
 	chat.RegisterLibroServiceServer(grpcServer, &s)
 	chat.RegisterChunkServiceServer(grpcServer, &s)
 	chat.RegisterPropuestaServiceServer(grpcServer, &s)
-	chat.RegisterContacarServiceServer(grpcServer, &s)
+	chat.RegisterContactarServiceServer(grpcServer, &s)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)

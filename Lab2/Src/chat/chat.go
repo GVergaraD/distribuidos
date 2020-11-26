@@ -24,7 +24,7 @@ type Server struct {
 var next *list.Element
 
 // Nodes -> DataNodes (1,2,3)
-var Nodes = []string{":9001", ":9002", ":9003"}
+var Nodes = []string{"10.6.40.221:9001", "10.6.40.222:9002", "10.6.40.223:9003"}
 
 // PartesNode -> variable para guardar la cantidad de partes del libro
 var PartesNode [3]int
@@ -102,7 +102,7 @@ func contactar(node string) bool {
 func escribir(message1 string, message2 string) {
 
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(":9004", grpc.WithInsecure())
+	conn, err := grpc.Dial("10.6.40.224:9004", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}

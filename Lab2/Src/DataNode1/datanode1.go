@@ -11,11 +11,7 @@ import (
 
 func main() {
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9001)) //ip nodo2
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	lis2, err := net.Listen("tcp", fmt.Sprintf(":%d", 9001)) //ip nodo3
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9001))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -30,9 +26,6 @@ func main() {
 	chat.RegisterContactarServiceServer(grpcServer, &s)
 
 	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %s", err)
-	}
-	if err := grpcServer.Serve(lis2); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}
 

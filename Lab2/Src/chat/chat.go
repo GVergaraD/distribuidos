@@ -292,7 +292,7 @@ func (s *Server) Consultar(ctx context.Context, in *Consult) (*Response, error) 
 func (s *Server) PedirChunk(ctx context.Context, in *Chunks) (*MessageResponse, error) {
 	log.Printf("Distribuir chunk: %s", in.FileName)
 	//":9001" -> DataNode1
-	distribuir(in.FileName, ":9001", "-1")
+	distribuir(in.FileName, "10.6.40.221:9001", "-1")
 	return &MessageResponse{Respuesta: "Chunk enviado"}, nil
 }
 

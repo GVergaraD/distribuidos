@@ -46,7 +46,7 @@ func pedir(filename string, node string) {
 
 }
 
-func split() {
+func split(mode string) {
 
 	random := random()
 
@@ -119,10 +119,17 @@ func split() {
 
 	// Avisa que se terminaron de pasar los chunks en el DataNode para que este genere la propuesta
 
-	// pasar el random a string
-	_, err = p.GenProp(context.Background(), &chat.Node{IDNode: strconv.Itoa(random)})
-	if err != nil {
-		log.Fatalf("Error al enviar chunk")
+	if mode == "Distribuido" { // Generar la propuesta "Exclusion Mutua Distribuida"
+		_, err = p.GenProp(context.Background(), &chat.Node{IDNode: strconv.Itoa(random)})
+		if err != nil {
+			log.Fatalf("Error al enviar chunk")
+		}
+	}
+	if mode == "Centralizado" { // Generar la propuesta "Exclusion Mutua Centralizada"
+		_, err = p.GenProp2(context.Background(), &chat.Node{IDNode: strconv.Itoa(random)})
+		if err != nil {
+			log.Fatalf("Error al enviar chunk")
+		}
 	}
 }
 
@@ -223,8 +230,12 @@ func recombine(libro string, totalPartsNum uint64) {
 
 func main() {
 
+	fmt.Println("Modo del programa(Distribuido/Centralizado): ")
+	var modo string
+	fmt.Scanln(&modo)
+
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("10.6.40.224:9004", grpc.WithInsecure())
+	conn, err := grpc.Dial("10.6.40.224:9004", grpc.WithInsecure()) // Para conectarse a NameNode
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
@@ -243,7 +254,7 @@ func main() {
 
 		if value == 1 {
 
-			split()
+			split(modo)
 
 		} else if value == 2 {
 

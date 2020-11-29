@@ -9,9 +9,9 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -49,9 +49,7 @@ var LibrosDisponibles = list.New()
 
 // ElegirNode -> recibe un conjunto de nodos y escoge uno de ellos aleatoriamente
 func ElegirNode(participantes []int) int {
-	s := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(s)
-	random := r.Intn(len(participantes))
+	random := rand.Intn(len(participantes))
 	return participantes[random]
 }
 
@@ -131,8 +129,42 @@ func Ints(input []int) []int {
 	return u
 }
 
+// Ints2 returns a unique subset of the int slice provided.
+func Ints2(input []int32) []int32 {
+	u := make([]int32, 0, len(input))
+	m := make(map[int32]bool)
+
+	for _, val := range input {
+		if _, ok := m[val]; !ok {
+			m[val] = true
+			u = append(u, val)
+		}
+	}
+
+	return u
+}
+
 func remove(slice []int, s int) []int {
 	return append(slice[:s], slice[s+1:]...)
+}
+
+// aceptar -> funcion para preguntar al NameNode si acepta la propuesta
+func aceptar(propuesta *[]int32, IDNode int32, partes int32) {
+
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("10.6.40.224:9004", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+
+	p := NewPropuestaServiceClient(conn)
+
+	respuesta, err := p.PregNameNode(context.Background(), &Prop{Propuesta: *propuesta, ID: IDNode, Partes: partes})
+	if err != nil {
+		log.Fatalf("Error al preguntar al NameNode")
+	}
+	*propuesta = respuesta.Propuesta
 }
 
 // PasarLibro -> funcion que recibe el titulo y la cantidad de partes del libro desde el cliente
@@ -296,8 +328,8 @@ func (s *Server) PedirChunk(ctx context.Context, in *Chunks) (*MessageResponse, 
 	return &MessageResponse{Respuesta: "Chunk enviado"}, nil
 }
 
-// GenProp -> funcion que genera la propuesta y verfica que esta sea aceptada,
-// si no es aceptada genera una nueva hasta converger
+// GenProp -> funcion que genera la propuesta "Exclusión Mutua Distribuida"y verfica
+// que esta sea aceptada, si no es aceptada genera una nueva hasta converger
 func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error) {
 
 	IDNodo, err := strconv.Atoi(in.IDNode) // in.IDNode = "0" or "1" or "2"
@@ -346,7 +378,11 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 			//enviar de forma random la siguiente
 			var NodosAux = nodos
 			NodosAux = remove(NodosAux, IDNodo)
-			propuesta[1] = ElegirNode(NodosAux)
+			if len(NodosAux) == 0 {
+				propuesta[1] = IDNodo
+			} else {
+				propuesta[1] = ElegirNode(NodosAux)
+			}
 		}
 
 		// Participantes de la propuesta
@@ -358,12 +394,15 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 				// Si todo responden band = false
 				if contactar(Nodes[unique[i]]) == true {
 					// unique[i] -> Nodo no respondio, hay que sacarlo de la lista y generar otra propuesta
-					nodos = remove(nodos, unique[i])
+					indice := sort.IntSlice(nodos).Search(unique[i])
+					nodos = remove(nodos, indice)
 					band = true
 					break
 				} else { // Si todo responden band = false -> puedo mandar la propuesta y distribuir
 					band = false
 				}
+			} else {
+				band = false
 			}
 		}
 	}
@@ -391,4 +430,156 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 	}
 
 	return &MessageResponse{Respuesta: "Propuesta generada"}, nil
+}
+
+// GenProp2 -> funcion que genera la propuesta "Exclusión Mutua Centralizada" y verfica
+// que esta sea aceptada, si no es aceptada genera una nueva hasta converger
+func (s *Server) GenProp2(ctx context.Context, in *Node) (*MessageResponse, error) {
+
+	IDNodo, err := strconv.Atoi(in.IDNode) // in.IDNode = "0" or "1" or "2"
+	if err != nil {
+		log.Fatalf("Error al pasar string a entero")
+	}
+
+	// Crear lista y guardar los chunks a distribuir
+	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
+		next = e.Next()
+		log.Printf("%s", e.Value)
+	}
+
+	band := true
+
+	//Nodos que van a participar en la propuesta inicial
+	var nodos = []int{0, 1, 2}
+
+	// Propuesta a generar
+	propuesta := make([]int32, ChunksNode[IDNodo].Len())
+
+	for band {
+
+		if PartesNode[IDNodo] >= 3 {
+
+			// En principio reparte 1 chunk a cada nodo y el resto lo reparte de forma aleatoria
+			for i := 0; i < len(nodos); i++ {
+				propuesta[i] = int32(nodos[i])
+				log.Printf("Nodo escogido: %d", nodos[i])
+				// Al principio tenemos 3 nodos
+				// -> propuesta[0] = primer nodo de la lista
+				// -> propuesta[1] = segundo nodo de la lista
+				// -> propuesta[2] = tercer nodo de la lista
+			}
+			//enviar de forma random las siguientes
+			for i := len(nodos); i < ChunksNode[IDNodo].Len(); i++ {
+				propuesta[i] = int32(ElegirNode(nodos))
+				log.Printf("Nodo escogido: %d", ElegirNode(nodos))
+				// -> propuesta[3] = random
+				// ...
+			}
+		} else {
+			// Se queda el con una y la otra la reparte de forma aleatoria
+			propuesta[0] = int32(IDNodo)
+
+			//enviar de forma random la siguiente
+			var NodosAux = nodos
+			NodosAux = remove(NodosAux, IDNodo)
+
+			if len(NodosAux) == 0 {
+				propuesta[1] = int32(IDNodo)
+			} else {
+				propuesta[1] = int32(ElegirNode(NodosAux))
+			}
+		}
+
+		fmt.Println("Propuesta antes:", propuesta)
+		aceptar(&propuesta, int32(IDNodo), int32(PartesNode[IDNodo]))
+		fmt.Println("Propuesta despues:", propuesta)
+		break
+	}
+	// Escribir en el Log
+	escribir(TituloNode[IDNodo], strconv.Itoa(PartesNode[IDNodo]))
+	i := 0
+	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
+		next = e.Next()
+		escribir(e.Value.(string), Nodes[propuesta[i]])
+		i++
+	}
+
+	// Distribuir propuesta
+	j := 0
+	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
+		next = e.Next()
+		if propuesta[j] != int32(IDNodo) {
+			distribuir(e.Value.(string), Nodes[propuesta[j]], "3")
+			// Eliminar el archivo
+			// Activar la siguiente linea solo en ubuntu
+			os.Remove(e.Value.(string))
+		}
+		ChunksNode[IDNodo].Remove(e)
+		j++
+	}
+
+	return &MessageResponse{Respuesta: "Propuesta generada"}, nil
+}
+
+// PregNameNode -> funcion que se encarga de aprobar la propuesta del NameNode
+// si es rechazada, genera una propuesta y se encarga de verificar que esta sea aceptada
+func (s *Server) PregNameNode(ctx context.Context, in *Prop) (*Prop, error) {
+
+	//Nodos que van a participar en la propuesta inicial
+	var nodos = []int{0, 1, 2}
+
+	band := true
+	unique := Ints2(in.Propuesta)
+	propuesta := in.Propuesta
+
+	// Preguntar si la propuesta ha sido aceptada por cada nodo
+	for i := 0; i < len(unique); i++ {
+		if unique[i] != in.ID {
+			if contactar(Nodes[int(unique[i])]) == true { // Propuesta ha sido rechazada
+				nodos := remove(nodos, int(unique[i]))
+				for band {
+					if int(in.Partes) >= 3 {
+						for i := 0; i < len(nodos); i++ {
+							propuesta[i] = int32(nodos[i])
+						}
+						for i := len(nodos); i < int(in.Partes); i++ {
+							propuesta[i] = int32(ElegirNode(nodos))
+						}
+					} else {
+						propuesta[0] = int32(in.ID)
+						var NodosAux = nodos
+						NodosAux = remove(NodosAux, int(in.ID))
+
+						if len(NodosAux) == 0 {
+							propuesta[1] = int32(in.ID)
+						} else {
+							propuesta[1] = int32(ElegirNode(NodosAux))
+						}
+					}
+					// Preguntar si la propuesta ha sido aceptada por cada nodo
+					unique = Ints2(propuesta)
+					for i := 0; i < len(unique); i++ {
+						if unique[i] != in.ID {
+							// Si todo responden band = false
+							if contactar(Nodes[int(unique[i])]) == true {
+								// unique[i] -> Nodo no respondio, hay que sacarlo de la lista y generar otra propuesta
+								indice := sort.IntSlice(nodos).Search(int(unique[i]))
+								nodos = remove(nodos, indice)
+								band = true
+								break
+							} else { // Si todo responden band = false -> puedo mandar la propuesta y distribuir
+								band = false
+							}
+						} else {
+							band = false
+						}
+					}
+				}
+				if band == false {
+					break
+				}
+			}
+		}
+	}
+	return &Prop{Propuesta: propuesta}, nil
 }

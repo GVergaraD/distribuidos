@@ -15,10 +15,17 @@ message Chunks{
 
 message MessageResponse {
   string Respuesta = 1;
+  int32 NodoCulpable = 2;
 }
 
 message Response {
   repeated string Respuesta = 1;
+}
+
+message Prop{
+  repeated int32 Propuesta = 1;
+  int32 ID = 2;
+  int32 Partes = 3;
 }
 
 message Message{
@@ -47,6 +54,8 @@ service LibroService {
 
 service PropuestaService {
   rpc GenProp(Node) returns (MessageResponse) {}
+  rpc GenProp2(Node) returns (MessageResponse) {}
+  rpc PregNameNode(Prop) returns(Prop) {}
 }
 
 service ChunkService {

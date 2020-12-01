@@ -1,5 +1,5 @@
 build:
-	go build -o	datanode1.go
+	go build -o	client.go
 
 run: 
-	go run datanode1.go
+	go run client.go

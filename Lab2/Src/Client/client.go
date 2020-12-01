@@ -49,7 +49,6 @@ func pedir(filename string, node string) {
 func split(mode string) {
 
 	random := random()
-	random = 0
 
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(Nodes[random], grpc.WithInsecure())

@@ -29,6 +29,6 @@ Para ejecturar los archivos es necesario hacer lo siguiente:
 Consideraciones:
 -Los libros utilizados estan en formato pdf.(https://www.elejandria.com/coleccion/libros-llevados-al-cine)
 -El Log se escribe en un archivo csv
--Los libros disponibles se encuentran en la carpeta Libros
+-Los libros disponibles se encuentran en la carpeta Libros(Client/Libros)
 -En ninguno de los 2 métodos se implementó el algoritmo para el caso en que acceden 2 nodos al log
 -Al principio cuando se intenta contactar al data node se hace un random asumiento que las 3 máquinas están disponibles al momento de subir el archivo, por lo que si apagan una máquina y sale justo esa en el random el cliente va a tirar error y terminará su ejecución

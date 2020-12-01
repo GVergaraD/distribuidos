@@ -7,23 +7,23 @@ El programa se encuentra distribuido en 4 maquinas en donde la primera cuenta co
 Para ejecturar los archivos es necesario hacer lo siguiente:
 	-dist81->Datanode1
 	desde carpeta distribuidos/Lab2/Src/ 
-	correr ./datanode1
+	correr ./datanode1.go
 
 	-dist81->Cliente
 	desde carpeta distribuidos/Lab2/Src/ 
-	correr ./client
+	correr ./client.go
 
 	-dist82->Datanode2
 	desde carpeta distribuidos/Lab2/Src/
-	correr ./datanode2
+	correr ./datanode2.go
 
 	-dist83->Datanode3
 	desde carpeta distribuidos/Lab2/Src/
-	correr ./datanode3
+	correr ./datanode3.go
 
 	-dist84->Namenode
 	desde carpeta distribuidos/Lab2/Src/
-	correr ./namenode
+	correr ./namenode.go
 
 
 Consideraciones:

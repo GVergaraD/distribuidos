@@ -6,11 +6,11 @@ Los archivos fueron clonados desde un repositorio(github) con git clone
 El programa se encuentra distribuido en 4 maquinas en donde la primera cuenta con 1 datanode y 1 cliente, la 2da y 3ra cuentan con los datanodes 2 y 3 respectivamente y la 4ta cuenta con un namenode que lleva el Log de los libros distribuidos.
 Para ejecturar los archivos es necesario hacer lo siguiente:
 	-dist81->Datanode1
-	desde carpeta distribuidos/Lab2/Src/DataNode1 
+	desde carpeta distribuidos/Lab2/Src/
 	correr ./datanode1.go
 
 	-dist81->Cliente
-	desde carpeta distribuidos/Lab2/Src/ 
+	desde carpeta distribuidos/Lab2/Src/Client 
 	correr ./client.go
 
 	-dist82->Datanode2

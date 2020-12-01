@@ -163,7 +163,7 @@ func recombine(libro string, totalPartsNum uint64) {
 	for j := uint64(0); j < totalPartsNum; j++ {
 
 		//read a chunk
-		currentChunkFileName := "./chunks/" + libro + "_" + strconv.FormatUint(j, 10)
+		currentChunkFileName := "../chunks/" + libro + "_" + strconv.FormatUint(j, 10)
 
 		newFileChunk, err := os.Open(currentChunkFileName)
 

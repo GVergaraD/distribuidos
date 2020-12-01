@@ -21,6 +21,9 @@ import (
 type Server struct {
 }
 
+// NumeroMensajes -> variable para guardar la cantidad de mensajes
+var NumeroMensajes = 0
+
 var next *list.Element
 
 // Nodes -> DataNodes (1,2,3)
@@ -391,6 +394,7 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 		// Preguntar si la propuesta ha sido aceptada por cada nodo
 		for i := 0; i < len(unique); i++ {
 			if unique[i] != IDNodo {
+				NumeroMensajes++
 				// Si todo responden band = false
 				if contactar(Nodes[unique[i]]) == true {
 					// unique[i] -> Nodo no respondio, hay que sacarlo de la lista y generar otra propuesta
@@ -407,6 +411,7 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 		}
 	}
 	// Escribir en el Log
+	NumeroMensajes++
 	escribir(TituloNode[IDNodo], strconv.Itoa(PartesNode[IDNodo]))
 	i := 0
 	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
@@ -420,6 +425,7 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
 		next = e.Next()
 		if propuesta[j] != IDNodo {
+			NumeroMensajes++
 			distribuir(e.Value.(string), Nodes[propuesta[j]], "3")
 			// Eliminar el archivo
 			// Activar la siguiente linea solo en ubuntu
@@ -429,6 +435,8 @@ func (s *Server) GenProp(ctx context.Context, in *Node) (*MessageResponse, error
 		j++
 	}
 
+	fmt.Println("Numero total de mensajes:", NumeroMensajes)
+	NumeroMensajes = 0
 	return &MessageResponse{Respuesta: "Propuesta generada"}, nil
 }
 
@@ -489,13 +497,13 @@ func (s *Server) GenProp2(ctx context.Context, in *Node) (*MessageResponse, erro
 				propuesta[1] = int32(ElegirNode(NodosAux))
 			}
 		}
-
-		fmt.Println("Propuesta antes:", propuesta)
+		NumeroMensajes++
 		aceptar(&propuesta, int32(IDNodo), int32(PartesNode[IDNodo]))
-		fmt.Println("Propuesta despues:", propuesta)
+		NumeroMensajes++
 		break
 	}
 	// Escribir en el Log
+	NumeroMensajes++
 	escribir(TituloNode[IDNodo], strconv.Itoa(PartesNode[IDNodo]))
 	i := 0
 	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
@@ -509,6 +517,7 @@ func (s *Server) GenProp2(ctx context.Context, in *Node) (*MessageResponse, erro
 	for e := ChunksNode[IDNodo].Front(); e != nil; e = next {
 		next = e.Next()
 		if propuesta[j] != int32(IDNodo) {
+			NumeroMensajes++
 			distribuir(e.Value.(string), Nodes[propuesta[j]], "3")
 			// Eliminar el archivo
 			// Activar la siguiente linea solo en ubuntu
@@ -518,6 +527,8 @@ func (s *Server) GenProp2(ctx context.Context, in *Node) (*MessageResponse, erro
 		j++
 	}
 
+	fmt.Println("Numero de mensajes propuesta centralizada:", NumeroMensajes)
+	NumeroMensajes = 0
 	return &MessageResponse{Respuesta: "Propuesta generada"}, nil
 }
 
@@ -532,9 +543,12 @@ func (s *Server) PregNameNode(ctx context.Context, in *Prop) (*Prop, error) {
 	unique := Ints2(in.Propuesta)
 	propuesta := in.Propuesta
 
+	MensajesPreg := 0
+
 	// Preguntar si la propuesta ha sido aceptada por cada nodo
 	for i := 0; i < len(unique); i++ {
 		if unique[i] != in.ID {
+			MensajesPreg++
 			if contactar(Nodes[int(unique[i])]) == true { // Propuesta ha sido rechazada
 				nodos := remove(nodos, int(unique[i]))
 				for band {
@@ -560,6 +574,7 @@ func (s *Server) PregNameNode(ctx context.Context, in *Prop) (*Prop, error) {
 					unique = Ints2(propuesta)
 					for i := 0; i < len(unique); i++ {
 						if unique[i] != in.ID {
+							MensajesPreg++
 							// Si todo responden band = false
 							if contactar(Nodes[int(unique[i])]) == true {
 								// unique[i] -> Nodo no respondio, hay que sacarlo de la lista y generar otra propuesta
@@ -581,5 +596,6 @@ func (s *Server) PregNameNode(ctx context.Context, in *Prop) (*Prop, error) {
 			}
 		}
 	}
+	fmt.Println("Mensajes en PregNameNode:", MensajesPreg)
 	return &Prop{Propuesta: propuesta}, nil
 }

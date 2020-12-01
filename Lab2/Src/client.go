@@ -49,6 +49,7 @@ func pedir(filename string, node string) {
 func split(mode string) {
 
 	random := random()
+	random = 0
 
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(Nodes[random], grpc.WithInsecure())
@@ -254,7 +255,10 @@ func main() {
 
 		if value == 1 {
 
+			start := time.Now()
 			split(modo)
+			elapsed := time.Since(start)
+			fmt.Println("Tiempo en subir el archivo:", elapsed)
 
 		} else if value == 2 {
 
